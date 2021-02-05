@@ -2,6 +2,13 @@
  
 ---
 
+### Плагины и версия Unity
+- Unity 2018.4.31f1
+- Simple Input System
+- Spine 3.7
+
+---
+
 ### APK файл имеет следующие свойства:
 - Горизонтальный режим.
 - Compression Method: LZ4HC
