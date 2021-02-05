@@ -2,7 +2,7 @@
  
 ---
 
-### Плагины и версия Unity
+### Плагины и версия Unity:
 - Unity 2018.4.31f1
 - Simple Input System
 - Spine 3.7
@@ -19,7 +19,13 @@
 - - [x] ARMv7
 - - [x] ARM64
 - - [x] x86
+
 ---
+
 ### Установлено:
 - NDK: android-ndk-r16b
 - JRE и JDK: 8u152 x64
+
+---
+
+### Использовано следующее соглашение имён в проекте: [UnityStyleGuide](https://github.com/stillwwater/UnityStyleGuide)
