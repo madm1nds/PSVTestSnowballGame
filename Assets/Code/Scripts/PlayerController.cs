@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
+using Spine.Unity;
+using Spine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,11 +22,14 @@ public class PlayerController : MonoBehaviour
 
     private float speedCharacter;
     private float speedCooldown;
-    private bool isMove;//чтобы скорость не увеличивалась в десятки раз при скольжении
+    private bool isMoveNearBarriers;//чтобы скорость не увеличивалась в десятки раз при скольжении
+
+    SkeletonAnimation skeletonAnimation;
+
 
     void Awake()
     {
-
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
     }
     void Start()
     {
@@ -35,9 +38,17 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {        
         InokeCharacterController();
+        if (SimpleInput.GetAxis("Horizontal") != 0 || SimpleInput.GetAxis("Vertical") != 0)
+        {
+            skeletonAnimation.AnimationName = "run";
+        }
+        else
+        {
+            skeletonAnimation.AnimationName = "Idle";
+        }
     }
 
     void InokeCharacterController()
@@ -49,11 +60,11 @@ public class PlayerController : MonoBehaviour
             transform.position.y + GroundCoordinates.correctionTop + 1.8f < groundTop.transform.position.y &&
             transform.position.x > groundLeft.transform.position.x &&
             transform.position.x < groundRight.transform.position.x)
-        {
+        {            
             MovePlayer();
         }
         else//если мы у стенок
-        {   //если позиция игрока выше чем позиция нижнего барьера
+        {   //если позиция игрока выше чем позиция нижнего барьера            
             if (transform.position.y + GroundCoordinates.correctionBottom - 0.1f > groundBottom.transform.position.y)
             {
                 // Если мы нажали влево
@@ -151,13 +162,13 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        isMove = false;
+        isMoveNearBarriers = false;
     }
     void MovePlayer()
     {   
-        if (!isMove)
+        if (!isMoveNearBarriers)
         {
-            isMove = true;
+            isMoveNearBarriers = true;
             transform.position = new Vector3(transform.position.x + SimpleInput.GetAxis("Horizontal") * speedCharacter,
                             transform.position.y + SimpleInput.GetAxis("Vertical") * speedCharacter,
                             transform.position.z);
@@ -165,9 +176,9 @@ public class PlayerController : MonoBehaviour
     }
     void MovePlayerHorizontally()
     {
-        if (!isMove)
+        if (!isMoveNearBarriers)
         {
-            isMove = true;
+            isMoveNearBarriers = true;
             transform.position = new Vector3(transform.position.x + SimpleInput.GetAxis("Horizontal") * speedCharacter,
                    transform.position.y,
                    transform.position.z);
@@ -175,9 +186,9 @@ public class PlayerController : MonoBehaviour
     }
     void MovePlayerVertically()
     {
-        if (!isMove)
+        if (!isMoveNearBarriers)
         {
-            isMove = true;
+            isMoveNearBarriers = true;
             transform.position = new Vector3(transform.position.x,
                        transform.position.y + SimpleInput.GetAxis("Vertical") * speedCharacter,
                        transform.position.z);

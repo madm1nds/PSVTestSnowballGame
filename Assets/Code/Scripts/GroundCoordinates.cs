@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+
 public static class GroundCoordinates
 {
     public static float correctionBottom;
