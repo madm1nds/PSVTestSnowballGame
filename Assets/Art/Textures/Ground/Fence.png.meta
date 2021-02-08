@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 119deed4815d4954f9a9cf7fac424951
+guid: 2c4a7ecae8c824242becd8ddd76600e4
 TextureImporter:
   fileIDToRecycleName:
-    21300000: snow_0
+    21300000: Fence3_0
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -74,13 +74,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: snow_0
+      name: Fence3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 220
+        height: 1570
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -88,7 +88,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0159c3dce38b38142b7ccb90e2fc7f21
+      spriteID: a8b917dbc45d87f42b27d710002df917
       vertices: []
       indices: 
       edges: []
@@ -96,7 +96,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 83e00bd7ae81cad4080cac189d15f6f8
+    spriteID: 6d516a55fda73e1429842fd8555e30a0
     vertices: []
     indices: 
     edges: []

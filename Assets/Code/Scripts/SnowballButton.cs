@@ -5,13 +5,22 @@ using System.Collections;
 public class SnowballButton : MonoBehaviour
 {
     [SerializeField]
-    private Transform player;
+    private Button snowballButton;
+    [SerializeField]
+    private Transform spawnPlace;
     [SerializeField]
     private Slider slider;
     [SerializeField]
     private GameObject hippoSnowballSet;
     [SerializeField]
-    private float time;
+    private GameObject abilityStatusBar;
+    [SerializeField]
+    private GameObject abilityStatusBarMask;
+    [SerializeField]
+    private GameObject readySnowball;
+    [SerializeField]
+    private Snowball time;
+
 
     private Vector2 direction;
     private float acceleration;
@@ -19,7 +28,7 @@ public class SnowballButton : MonoBehaviour
 
     void Start()
     {
-        GetComponent<Button>().onClick.AddListener(delegate { ThrowSnowball(); });
+        snowballButton.onClick.AddListener(delegate { ThrowSnowball(); });
         acceleration = 1;
         acceleration *= 1000f;
         direction = new Vector2(0.6f, 1f);
@@ -27,8 +36,13 @@ public class SnowballButton : MonoBehaviour
 
     IEnumerator RunTimer(GameObject snowball)
     {
-        yield return new WaitForSeconds(time);
+        readySnowball.SetActive(false);
+        abilityStatusBarMask.transform.localPosition = new Vector3(0f, abilityStatusBarMask.transform.localPosition.y, abilityStatusBarMask.transform.localPosition.z);
+        abilityStatusBar.SetActive(true);
+        yield return new WaitForSeconds(time.cooldown);
         isThrow = false;
+        readySnowball.SetActive(true);
+        abilityStatusBar.SetActive(false);
         yield return new WaitForSeconds(4f);
         snowball.SetActive(false);
         StopCoroutine(RunTimer(snowball));
@@ -43,7 +57,7 @@ public class SnowballButton : MonoBehaviour
                 if (hippoSnowballSet.transform.GetChild(i).gameObject.activeInHierarchy == false)
                 {
                     StartCoroutine(RunTimer(hippoSnowballSet.transform.GetChild(i).gameObject)); ;
-                    hippoSnowballSet.transform.GetChild(i).transform.position = player.transform.position;
+                    hippoSnowballSet.transform.GetChild(i).transform.position = spawnPlace.transform.position;
                     isThrow = true;
                     hippoSnowballSet.transform.GetChild(i).gameObject.SetActive(true);
                     hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass = 3f;
@@ -75,6 +89,7 @@ public class SnowballButton : MonoBehaviour
                     }
 
                     hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().AddForce(direction.normalized * acceleration);
+                    hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().AddTorque(100);
                     break;
                 }
             }

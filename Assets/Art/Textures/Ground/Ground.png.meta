@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 47345a8c8037e724ea9e15951eac3357
+guid: 837537180d9bdb64dba165fec71231d7
 TextureImporter:
   fileIDToRecycleName:
-    21300000: snowBarrier_0
+    21300000: NewGround2_0
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -74,13 +74,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: snowBarrier_0
+      name: NewGround2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 70
-        height: 256
+        width: 800
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -88,7 +88,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52b182a8f7feda24fa265da0030e8e6e
+      spriteID: 9d69bdf99d116b54ea16e5a27c280144
       vertices: []
       indices: 
       edges: []
@@ -96,7 +96,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: fa20fc13f4153244f85d0c6c6414ce24
+    spriteID: c086dd19666892f4e8efc1e2b5f30191
     vertices: []
     indices: 
     edges: []

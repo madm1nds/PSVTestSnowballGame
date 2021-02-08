@@ -5,7 +5,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField]
-    private Charactrer settings;
+    private Charactrer[] settings;
+    [SerializeField]
+    private GameObject[] enemy;
     void Start()
     {
         

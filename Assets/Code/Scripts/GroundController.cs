@@ -22,7 +22,7 @@ public class GroundController : MonoBehaviour
         // Задержка, так как камера не успевает принять нужный вид.
         yield return new WaitForSeconds(0.001f);
         GroundCoordinates.SetGround(groundBottom, groundTop, groundLeft, groundRight, player, cam);
-        StopAllCoroutines();
+        StopCoroutine(SetGround());
         yield return new WaitForSeconds(1f);
     }
     // Start is called before the first frame update

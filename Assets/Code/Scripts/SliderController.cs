@@ -3,19 +3,36 @@ using UnityEngine.UI;
 
 public class SliderController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    Slider slider;
+    [SerializeField]
+    private Slider slider;
+    [SerializeField]
+    private GameObject abilityStatusBar;
+
+    private bool isDecreasing;
     void Start()
     {
-        slider = GetComponent<Slider>();
+        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (slider.value < 1)
+        if (abilityStatusBar.gameObject.activeInHierarchy == false)
         {
-            slider.value += 0.01f;
+            if (slider.value < 1 && isDecreasing == false)
+            {
+                slider.value += 0.01f;
+            }
+            else if ((slider.value > 0 && isDecreasing == true) || slider.value >= 1)
+            {
+                isDecreasing = true;
+                slider.value -= 0.01f;
+                //slider.value = 0;
+            }
+            else
+            {
+                isDecreasing = false;
+            }
         }
         else
         {
