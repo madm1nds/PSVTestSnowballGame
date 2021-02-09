@@ -17,15 +17,15 @@ public class TimerRoundController : MonoBehaviour
 
     void Start()
     {
+        currentTime = -1;
         StartCoroutine(RunTimer());
     }
     IEnumerator RunTimer()
     {
         do
-        {
-            string currentTimeString = "";
-            textPictureConverter.positionCurrentElement = -150;
-            yield return new WaitForSeconds(1f);
+        {            
+            string currentTimeString = "";            
+            
             currentTime++;
             minutes = currentTime / 60;
             seconds = currentTime - (60 * minutes);
@@ -61,11 +61,8 @@ public class TimerRoundController : MonoBehaviour
             {
                 currentTimeString += seconds;
             }
-            for (int i = 0; i < currentTimeString.Length; i++)
-            {
-                textPictureConverter.SetImageNumber(timerSet.transform.GetChild(i + 1).gameObject, currentTimeString[i]);
-                textPictureConverter.SetAnchoredPosition(timerSet.transform.GetChild(i).gameObject, timerSet.transform.GetChild(i + 1).gameObject);
-            }
+            textPictureConverter.SetImageNumber(timerSet, currentTimeString, 10, 10, AlignmentTextPicture.Right);
+            yield return new WaitForSeconds(1f);
         } while (true);
     }
 }

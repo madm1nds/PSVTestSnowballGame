@@ -11,7 +11,7 @@ public class SliderController : MonoBehaviour
     private bool isDecreasing;
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -26,8 +26,7 @@ public class SliderController : MonoBehaviour
             else if ((slider.value > 0 && isDecreasing == true) || slider.value >= 1)
             {
                 isDecreasing = true;
-                slider.value -= 0.01f;
-                //slider.value = 0;
+                slider.value -= 0.01f;                
             }
             else
             {

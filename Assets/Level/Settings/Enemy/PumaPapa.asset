@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6f50ea90fb29eb458363cb44e77380d, type: 3}
-  m_Name: cooldownHippo
+  m_Script: {fileID: 11500000, guid: 48c0212849277a040b7b5bf99c0f39d2, type: 3}
+  m_Name: PumaPapa
   m_EditorClassIdentifier: 
-  cooldown: 0.78
+  speedCharacter: 1
+  speedCooldown: 1

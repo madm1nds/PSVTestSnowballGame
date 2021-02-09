@@ -33,7 +33,7 @@ public class SnowballButton : MonoBehaviour
         acceleration *= 1000f;
         direction = new Vector2(0.6f, 1f);
     }
-
+    //корутин продолжает работать, даже после выключение объекта...
     IEnumerator RunTimer(GameObject snowball)
     {
         readySnowball.SetActive(false);
@@ -56,7 +56,10 @@ public class SnowballButton : MonoBehaviour
             {
                 if (hippoSnowballSet.transform.GetChild(i).gameObject.activeInHierarchy == false)
                 {
-                    StartCoroutine(RunTimer(hippoSnowballSet.transform.GetChild(i).gameObject)); ;
+                    hippoSnowballSet.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+                    hippoSnowballSet.transform.GetChild(i).gameObject.GetComponent<CircleCollider2D>().enabled = true;
+
+                    StartCoroutine(RunTimer(hippoSnowballSet.transform.GetChild(i).gameObject));
                     hippoSnowballSet.transform.GetChild(i).transform.position = spawnPlace.transform.position;
                     isThrow = true;
                     hippoSnowballSet.transform.GetChild(i).gameObject.SetActive(true);
@@ -87,9 +90,10 @@ public class SnowballButton : MonoBehaviour
                         direction = new Vector2(0.85f, 0.8f);
                         hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass -= slider.value + 0.8f;
                     }
-
                     hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().AddForce(direction.normalized * acceleration);
-                    hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().AddTorque(100);
+
+                    //чем меньше радиус коллайдера, тем сильнее закручивается снежок.
+                    hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().AddTorque(45);
                     break;
                 }
             }
