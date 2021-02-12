@@ -8,7 +8,7 @@ public class CloudsController : MonoBehaviour
     private Transform clouds;
 
     private bool isMoveLeft;
-    // Update is called once per frame
+    
     void FixedUpdate()
     {
         if (isMoveLeft == false && clouds.position.x <= 110f)

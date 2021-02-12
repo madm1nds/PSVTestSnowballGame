@@ -5,13 +5,13 @@ using UnityEngine;
 public class GroundController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject groundBottom;
-    [SerializeField]
     private GameObject groundTop;
+    [SerializeField]
+    private GameObject groundBottom;
     [SerializeField]
     private GameObject groundLeft;
     [SerializeField]
-    private GameObject groundRight;
+    private GameObject groundCenter;
 
     [SerializeField]
     private Camera cam;
@@ -21,9 +21,8 @@ public class GroundController : MonoBehaviour
     {
         // Задержка, так как камера не успевает принять нужный вид.
         yield return new WaitForSeconds(0.001f);
-        GroundCoordinates.SetGround(groundBottom, groundTop, groundLeft, groundRight, player, cam);
-        StopCoroutine(SetGround());
-        yield return new WaitForSeconds(1f);
+        GroundCoordinates.SetGround(groundBottom, groundTop, groundLeft, groundCenter, player, cam);
+        yield break;        
     }
     // Start is called before the first frame update
     void Start()

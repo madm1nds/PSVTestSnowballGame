@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Spine.Unity;
-using Spine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,36 +8,22 @@ public class PlayerController : MonoBehaviour
     private Charactrer settings;
 
     [SerializeField]
-    private GameObject groundBottom;
-    [SerializeField]
-    private GameObject groundTop;
-    [SerializeField]
-    private GameObject groundLeft;
-    [SerializeField]
-    private GameObject groundRight;
-
-    [SerializeField]
     private Camera cam;
 
     [SerializeField]
-    private GameObject player;
+    private Transform player;
 
     private float speedCharacter;
-    private float speedCooldown;
+    
     private bool isMoveNearBarriers;//чтобы скорость не увеличивалась в десятки раз при скольжении
 
     [SerializeField]
-    private SkeletonAnimation skeletonAnimation;
+    private SkeletonAnimation playerSkeletonAnimation;
 
 
-    void Awake()
-    {
-        //skeletonAnimation = GetComponent<SkeletonAnimation>();
-    }
     void Start()
     {
         speedCharacter = settings.speedCharacter * 0.1f;
-        speedCooldown = settings.speedCooldown;
     }
 
 
@@ -47,36 +32,35 @@ public class PlayerController : MonoBehaviour
         InokeCharacterController();
         if (SimpleInput.GetAxis("Horizontal") != 0 || SimpleInput.GetAxis("Vertical") != 0)
         {
-            skeletonAnimation.AnimationName = "run";
+            playerSkeletonAnimation.AnimationName = "run";
         }
         else
         {
-            skeletonAnimation.AnimationName = "Idle";
+            playerSkeletonAnimation.AnimationName = "Idle";
         }
     }
 
     void InokeCharacterController()
     {
-        //0.1f и 1.8f - границы края экрана. 
         //Всю эту проверку приходиться делать, так как при использовании обычной физики - персонаж отскакивет от барьеров
         if (SimpleInput.GetAxis("Horizontal") != 0 && SimpleInput.GetAxis("Vertical") != 0 &&
-            player.transform.position.y + GroundCoordinates.correctionBottom - 0.1f > groundBottom.transform.position.y &&
-            player.transform.position.y + GroundCoordinates.correctionTop + 1.8f < groundTop.transform.position.y &&
-            player.transform.position.x > groundLeft.transform.position.x &&
-            player.transform.position.x < groundRight.transform.position.x)
+        player.position.y > ScreenBoundarySeeker.screenBoundary_y_bottom &&
+        player.position.y < ScreenBoundarySeeker.screenBoundary_y_top &&
+        player.position.x > ScreenBoundarySeeker.screenBoundary_x_left &&
+        player.position.x < ScreenBoundarySeeker.screenBoundary_x_center)
         {
             MovePlayer();
         }
         else//если мы у стенок
         {   //если позиция игрока выше чем позиция нижнего барьера            
-            if (player.transform.position.y + GroundCoordinates.correctionBottom - 0.1f > groundBottom.transform.position.y)
+            if (player.position.y > ScreenBoundarySeeker.screenBoundary_y_bottom)
             {
                 // Если мы нажали влево
                 if (SimpleInput.GetAxis("Vertical") < 0)
                 {
                     //Если мы находимся между боковых барьеров
-                    if ((SimpleInput.GetAxis("Horizontal") <= 0 && player.transform.position.x >= groundLeft.transform.position.x)
-                    || (SimpleInput.GetAxis("Horizontal") >= 0 && player.transform.position.x <= groundRight.transform.position.x))
+                    if ((SimpleInput.GetAxis("Horizontal") <= 0 && player.position.x >= ScreenBoundarySeeker.screenBoundary_x_left)
+                    || (SimpleInput.GetAxis("Horizontal") >= 0 && player.position.x <= ScreenBoundarySeeker.screenBoundary_x_center))
                     {
                         MovePlayer();
                     }
@@ -85,8 +69,8 @@ public class PlayerController : MonoBehaviour
                 {
                     ReturnToTheField_X_Axis();
 
-                    if (player.transform.position.x >= groundLeft.transform.position.x &&
-                    player.transform.position.x <= groundRight.transform.position.x)
+                    if (player.position.x >= ScreenBoundarySeeker.screenBoundary_x_left &&
+                    player.position.x <= ScreenBoundarySeeker.screenBoundary_x_center)
                     {
                         MovePlayerHorizontally();
                     }
@@ -98,8 +82,8 @@ public class PlayerController : MonoBehaviour
                 {
                     //и если мы нажимаем влево и мы находимся слева от правой стенки
                     // или если мы нажимаем вправо и мы находимся справа от левой стенки
-                    if ((SimpleInput.GetAxis("Horizontal") <= 0 && player.transform.position.x >= groundLeft.transform.position.x)
-                        || (SimpleInput.GetAxis("Horizontal") >= 0 && player.transform.position.x <= groundRight.transform.position.x))
+                    if ((SimpleInput.GetAxis("Horizontal") <= 0 && player.position.x >= ScreenBoundarySeeker.screenBoundary_x_left)
+                        || (SimpleInput.GetAxis("Horizontal") >= 0 && player.position.x <= ScreenBoundarySeeker.screenBoundary_x_center))
                     {
                         MovePlayer();
                     }
@@ -108,8 +92,8 @@ public class PlayerController : MonoBehaviour
                 {
                     ReturnToTheField_X_Axis();
 
-                    if (player.transform.position.x >= groundLeft.transform.position.x &&
-                    player.transform.position.x <= groundRight.transform.position.x)
+                    if (player.position.x >= ScreenBoundarySeeker.screenBoundary_x_left &&
+                    player.position.x <= ScreenBoundarySeeker.screenBoundary_x_center)
                     {
                         MovePlayerHorizontally();
                     }
@@ -117,14 +101,14 @@ public class PlayerController : MonoBehaviour
                 }
             }
             //---------------------------------------------------------------------------------------
-            if (player.transform.position.x > groundLeft.transform.position.x)
+            if (player.position.x > ScreenBoundarySeeker.screenBoundary_x_left)
             {
                 if (SimpleInput.GetAxis("Horizontal") < 0) // если мы нажимаем влево и отталкиваемся от правой стенки налево
                 {
                     //и и если мы нажимаем вниз и мы находимся выше позиции нижнего барьера
                     //и если мы нажимаем вверх и мы находимся ниже позиции верхнего барьера
-                    if ((SimpleInput.GetAxis("Vertical") <= 0 && player.transform.position.y + GroundCoordinates.correctionBottom - 0.1f >= groundBottom.transform.position.y)
-                         || (SimpleInput.GetAxis("Vertical") >= 0 && player.transform.position.y + GroundCoordinates.correctionTop + 1.8f <= groundTop.transform.position.y))
+                    if ((SimpleInput.GetAxis("Vertical") <= 0 && player.position.y >= ScreenBoundarySeeker.screenBoundary_y_bottom)
+                         || (SimpleInput.GetAxis("Vertical") >= 0 && player.position.y <= ScreenBoundarySeeker.screenBoundary_y_top))
                     {
                         MovePlayer();
                     }
@@ -135,8 +119,8 @@ public class PlayerController : MonoBehaviour
                     ReturnToTheField_Y_Axis();
                     //Если мы находимся выше позиции нижнего барьера или если мы находимся ниже позиции верхнего барьера
                     //то мы скользим по правой стенке
-                    if (player.transform.position.y + GroundCoordinates.correctionBottom - 0.1f >= groundBottom.transform.position.y &&
-        player.transform.position.y + GroundCoordinates.correctionTop + 1.8f <= groundTop.transform.position.y)
+                    if (player.position.y >= ScreenBoundarySeeker.screenBoundary_y_bottom &&
+                    player.position.y <= ScreenBoundarySeeker.screenBoundary_y_top)
                     {
                         MovePlayerVertically();
                     }
@@ -148,8 +132,8 @@ public class PlayerController : MonoBehaviour
                 {
                     //и и если мы нажимаем вниз и мы находимся выше позиции нижнего барьера
                     //и если мы нажимаем вверх и мы находимся ниже позиции верхнего барьера
-                    if ((SimpleInput.GetAxis("Vertical") <= 0 && player.transform.position.y + GroundCoordinates.correctionBottom - 0.1f >= groundBottom.transform.position.y)
-                         || (SimpleInput.GetAxis("Vertical") >= 0 && player.transform.position.y + GroundCoordinates.correctionTop + 1.8f <= groundTop.transform.position.y))
+                    if ((SimpleInput.GetAxis("Vertical") <= 0 && player.position.y >= ScreenBoundarySeeker.screenBoundary_y_bottom)
+                         || (SimpleInput.GetAxis("Vertical") >= 0 && player.position.y <= ScreenBoundarySeeker.screenBoundary_y_top))
                     {
                         MovePlayer();
                     }
@@ -158,8 +142,8 @@ public class PlayerController : MonoBehaviour
                 {
                     ReturnToTheField_Y_Axis();
 
-                    if (player.transform.position.y + GroundCoordinates.correctionBottom - 0.1f >= groundBottom.transform.position.y &&
-                    player.transform.position.y + GroundCoordinates.correctionTop + 1.8f <= groundTop.transform.position.y)
+                    if (player.position.y >= ScreenBoundarySeeker.screenBoundary_y_bottom &&
+                    player.position.y <= ScreenBoundarySeeker.screenBoundary_y_top)
                     {
                         MovePlayerVertically();
                     }
@@ -173,11 +157,11 @@ public class PlayerController : MonoBehaviour
         if (!isMoveNearBarriers)
         {
             isMoveNearBarriers = true;
-            player.transform.position = new Vector3(player.transform.position.x + SimpleInput.GetAxis("Horizontal") * speedCharacter,
-                            player.transform.position.y + SimpleInput.GetAxis("Vertical") * speedCharacter,
-                            player.transform.position.z);
-            player.transform.localScale = new Vector3(player.transform.localScale.x - (SimpleInput.GetAxis("Vertical") * 0.01f),
-                                        player.transform.localScale.y - (SimpleInput.GetAxis("Vertical") * 0.01f), player.transform.localScale.z);
+            player.position = new Vector3(player.position.x + SimpleInput.GetAxis("Horizontal") * speedCharacter,
+                            player.position.y + SimpleInput.GetAxis("Vertical") * speedCharacter,
+                            player.position.z);
+            player.localScale = new Vector3(player.localScale.x - (SimpleInput.GetAxis("Vertical") * 0.01f),
+                                        player.localScale.y - (SimpleInput.GetAxis("Vertical") * 0.01f), player.localScale.z);
         }
     }
     void MovePlayerHorizontally()
@@ -185,9 +169,9 @@ public class PlayerController : MonoBehaviour
         if (!isMoveNearBarriers)
         {
             isMoveNearBarriers = true;
-            player.transform.position = new Vector3(player.transform.position.x + SimpleInput.GetAxis("Horizontal") * speedCharacter,
-                   player.transform.position.y,
-                   player.transform.position.z);
+            player.position = new Vector3(player.position.x + SimpleInput.GetAxis("Horizontal") * speedCharacter,
+                   player.position.y,
+                   player.position.z);
         }
     }
     void MovePlayerVertically()
@@ -195,11 +179,11 @@ public class PlayerController : MonoBehaviour
         if (!isMoveNearBarriers)
         {
             isMoveNearBarriers = true;
-            player.transform.position = new Vector3(player.transform.position.x,
-                       player.transform.position.y + SimpleInput.GetAxis("Vertical") * speedCharacter,
-                       player.transform.position.z);
-            player.transform.localScale = new Vector3(player.transform.localScale.x - (SimpleInput.GetAxis("Vertical") * 0.01f),
-                            player.transform.localScale.y - (SimpleInput.GetAxis("Vertical") * 0.01f), player.transform.localScale.z);
+            player.position = new Vector3(player.position.x,
+                       player.position.y + SimpleInput.GetAxis("Vertical") * speedCharacter,
+                       player.position.z);
+            player.localScale = new Vector3(player.localScale.x - (SimpleInput.GetAxis("Vertical") * 0.01f),
+                            player.localScale.y - (SimpleInput.GetAxis("Vertical") * 0.01f), player.localScale.z);
         }
     }
     void ReturnToTheField_Y_Axis()
@@ -207,27 +191,27 @@ public class PlayerController : MonoBehaviour
         // Если нас персонаж вышел за пределы из-за большой скорости ( из-за этого участка когда, физика в игре постоянно "подкидывает" персонажа
         // однако если его вызывать в определённый момент, то тогда этого не видно.)
         //если персонаж вышел ниже барьера и мы нажимаем вверх (чтобы мы не прыгали постоянно в углу)
-        if (player.transform.position.y + GroundCoordinates.correctionBottom - 0.1f < groundBottom.transform.position.y && SimpleInput.GetAxis("Vertical") >= 0)
+        if (player.position.y < ScreenBoundarySeeker.screenBoundary_y_bottom && SimpleInput.GetAxis("Vertical") >= 0)
         {
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.01f, player.transform.position.z);
+            player.position = new Vector3(player.position.x, player.position.y + 0.01f, player.position.z);
         }
         //если персонаж вышел выше барьера и мы нажимаем вниз (чтобы мы не прыгали постоянно в углу)
-        if (player.transform.position.y + GroundCoordinates.correctionTop + 1.8f > groundTop.transform.position.y && SimpleInput.GetAxis("Vertical") <= 0)
+        if (player.position.y > ScreenBoundarySeeker.screenBoundary_y_top && SimpleInput.GetAxis("Vertical") <= 0)
         {
-            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.01f, player.transform.position.z);
+            player.position = new Vector3(player.position.x, player.position.y - 0.01f, player.position.z);
         }
     }
     void ReturnToTheField_X_Axis()
     {
         //если персонаж вышел левее барьера и мы нажимаем вправо 
-        if (player.transform.position.x < groundLeft.transform.position.x && SimpleInput.GetAxis("Horizontal") >= 0)
+        if (player.position.x < ScreenBoundarySeeker.screenBoundary_x_left && SimpleInput.GetAxis("Horizontal") >= 0)
         {
-            player.transform.position = new Vector3(player.transform.position.x + 0.01f, player.transform.position.y, player.transform.position.z);
+            player.position = new Vector3(player.position.x + 0.01f, player.position.y, player.position.z);
         }
         //если персонаж вышел правее барьера и мы нажимаем влево
-        if (player.transform.position.x > groundRight.transform.position.x && SimpleInput.GetAxis("Horizontal") <= 0)
+        if (player.position.x > ScreenBoundarySeeker.screenBoundary_x_center && SimpleInput.GetAxis("Horizontal") <= 0)
         {
-            player.transform.position = new Vector3(player.transform.position.x - 0.01f, player.transform.position.y, player.transform.position.z);
+            player.position = new Vector3(player.position.x - 0.01f, player.position.y, player.position.z);
         }
     }
 }

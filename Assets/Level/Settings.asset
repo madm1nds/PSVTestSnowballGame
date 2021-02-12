@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65f5802f74d5bc84fa46288fd4d5f8b1, type: 3}
+  m_Name: Settings
+  m_EditorClassIdentifier: 
+  speedHippo: 1.8
+  speedCooldownHippo: 10
+  pointsForVictory: 15
+  pointsPumaPapa: 1
+  pointsFoxSon: 2
+  pointsRaccoonPapa: 3
+  speedPumaPapa: 0.6
+  speedCooldownPumaPapa: 3
+  speedFoxSon: 0.8
+  speedCooldownFoxSon: 2
+  speedRaccoonPapa: 1
+  speedCooldownRaccoonPapa: 1
+  chanceStop: 0.1
+  timeStop: 2
+  points:
+  - {fileID: 11400000, guid: 820e41c8556ddec44b8eb26865f26f33, type: 2}
+  - {fileID: 11400000, guid: 738e1356e3e0dcd429dc66b5a5499e71, type: 2}
+  - {fileID: 11400000, guid: 7d301830c4a0fe84fb208178bc2c169f, type: 2}
+  enemyCharacters:
+  - {fileID: 11400000, guid: eeb8d5f6278b51a488d5e20ead67d55d, type: 2}
+  - {fileID: 11400000, guid: 20055c3eff9f7e54bb19e27e863a54c6, type: 2}
+  - {fileID: 11400000, guid: eb9f76d738b26594eb285edc6f5fb7c2, type: 2}
+  stoppingEnemy: {fileID: 11400000, guid: 1d1bfea56f32d6e43aa289973fe2a0fe, type: 2}
+  hippo: {fileID: 11400000, guid: f78337fea942e2243bcdc476d3c90bb1, type: 2}
+  cooldownHippo: {fileID: 11400000, guid: fdc6b5cd0ec1a0f4cb7a9b9394b695e7, type: 2}
+  requiredPoints: {fileID: 11400000, guid: 71213ca7c4cb33f46bd22f84f4662d55, type: 2}

@@ -7,7 +7,7 @@ public static class GroundCoordinates
     public static float correctionBottom;
     public static float correctionTop;
 
-    public static void SetGround(GameObject groundBottom, GameObject groundTop, GameObject groundLeft, GameObject groundRight, GameObject player, Camera cam)
+    public static void SetGround(GameObject groundBottom, GameObject groundTop, GameObject groundLeft, GameObject groundCenter, GameObject player, Camera cam)
     {
         CorrectBottomСoordinates(cam);
 

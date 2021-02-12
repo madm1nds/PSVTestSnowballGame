@@ -14,10 +14,9 @@ public class SliderController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if (abilityStatusBar.gameObject.activeInHierarchy == false)
+        if (abilityStatusBar.activeInHierarchy == false)
         {
             if (slider.value < 1 && isDecreasing == false)
             {

@@ -19,26 +19,36 @@ public class TextPictureConverter : MonoBehaviour
     public void SetImageNumber(GameObject setObject, string convertibleString, float indent, float spaceBetweenElements, AlignmentTextPicture alignmentTextPicture)
     {
         int checkLength = 0;
+        int positionCount = 0;
+        string TransformedChar;
         positionCurrentElement = indent;
         this.spaceBetweenElements = spaceBetweenElements;
-        if (setObject.transform.childCount - 1 >= convertibleString.Length)
+
+        GameObject[] setObjectArray = new GameObject[setObject.transform.childCount];
+        Image[] setObjectImages = new Image[setObject.transform.childCount];
+        RectTransform[] setObjectRectTransform = new RectTransform[setObject.transform.childCount];
+        for (int i = 0; i < setObjectArray.Length; i++)
+        {
+            setObjectArray[i] = setObject.transform.GetChild(i).gameObject;
+            setObjectImages[i] = setObject.transform.GetChild(i).GetComponent<Image>();
+            setObjectRectTransform[i] = setObject.transform.GetChild(i).GetComponent<RectTransform>();
+        }
+
+        if (setObjectArray.Length - 1 >= convertibleString.Length)
         {
             checkLength = convertibleString.Length;
         }
         else
         {
-            checkLength = setObject.transform.childCount - 1;
+            checkLength = setObjectArray.Length - 1;
             Debug.Log("Осторожно! Число элементов в строке больше, чем элементов в наборе! Это может привести к потери данных!");
         }
-        for (int i = 0; i < setObject.transform.childCount; i++)
+        for (int i = 0; i < setObjectArray.Length; i++)
         {
-            setObject.transform.GetChild(i).gameObject.SetActive(false);
+            setObjectArray[i].SetActive(false);
         }
-        
         for (int i = 0; i < checkLength; i++)
         {
-            string TransformedChar;
-            int positionCount = 0;
             switch (convertibleString[i])
             {
                 case '/': TransformedChar = "slash"; break;
@@ -58,9 +68,9 @@ public class TextPictureConverter : MonoBehaviour
                 positionCount = spriteNumbers[j].name.LastIndexOf("_") + 1;//обрезаем всё что после
                 if (TransformedChar == spriteNumbers[j].name.Substring(positionCount))//если мы нашли по имени
                 {
-                    setObject.transform.GetChild(i + 1).GetComponent<Image>().sprite = spriteNumbers[j];
-                    setObject.transform.GetChild(i + 1).GetComponent<RectTransform>().sizeDelta = new Vector2(spriteNumbers[j].rect.width, spriteNumbers[j].rect.height);
-                    setObject.transform.GetChild(i + 1).gameObject.SetActive(true);
+                    setObjectImages[i + 1].sprite = spriteNumbers[j];
+                    setObjectRectTransform[i + 1].sizeDelta = new Vector2(spriteNumbers[j].rect.width, spriteNumbers[j].rect.height);
+                    setObjectArray[i + 1].SetActive(true);
                     if (alignmentTextPicture == AlignmentTextPicture.Right || alignmentTextPicture == AlignmentTextPicture.Center)
                     {
                         positionCurrentElement -= spriteNumbers[j].rect.width;//при якоре по центру, алгоритм выравнивает по правой стороне                   
@@ -71,8 +81,8 @@ public class TextPictureConverter : MonoBehaviour
             }
         }
 
-        setObject.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(System.Math.Abs(positionCurrentElement), 
-                                                                        setObject.transform.GetComponent<RectTransform>().sizeDelta.y);
+        setObject.GetComponent<RectTransform>().sizeDelta = new Vector2(System.Math.Abs(positionCurrentElement),
+                                                                        setObject.GetComponent<RectTransform>().sizeDelta.y);
         if (alignmentTextPicture == AlignmentTextPicture.Center)
         {
             positionCurrentElement /= 2;
@@ -80,14 +90,14 @@ public class TextPictureConverter : MonoBehaviour
 
         for (int i = 0; i < checkLength; i++)
         {
-            SetAnchoredPosition(setObject.transform.GetChild(i).gameObject, setObject.transform.GetChild(i + 1).gameObject);
+            SetAnchoredPosition(setObjectRectTransform[i], setObjectRectTransform[i + 1]);
         }
     }
-    public void SetAnchoredPosition(GameObject previousElement, GameObject currentElement)
+    public void SetAnchoredPosition(RectTransform previousElement, RectTransform currentElement)
     {
-        positionCurrentElement += ((previousElement.GetComponent<RectTransform>().sizeDelta.x) -
-                                                           (currentElement.GetComponent<RectTransform>().sizeDelta.x) + spaceBetweenElements) / 2 +
-                                                           currentElement.GetComponent<RectTransform>().sizeDelta.x;
-        currentElement.GetComponent<RectTransform>().anchoredPosition = new Vector2(positionCurrentElement, 0);
+        positionCurrentElement += ((previousElement.sizeDelta.x) -
+                                    (currentElement.sizeDelta.x) + spaceBetweenElements) / 2 +
+                                     currentElement.sizeDelta.x;
+        currentElement.anchoredPosition = new Vector2(positionCurrentElement, 0);
     }
 }

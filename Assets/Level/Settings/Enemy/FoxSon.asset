@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48c0212849277a040b7b5bf99c0f39d2, type: 3}
   m_Name: FoxSon
   m_EditorClassIdentifier: 
-  speedCharacter: 1
+  speedCharacter: 0.5
   speedCooldown: 1

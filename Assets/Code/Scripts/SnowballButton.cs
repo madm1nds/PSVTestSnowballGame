@@ -13,87 +13,91 @@ public class SnowballButton : MonoBehaviour
     [SerializeField]
     private GameObject hippoSnowballSet;
     [SerializeField]
-    private GameObject abilityStatusBar;
-    [SerializeField]
-    private GameObject abilityStatusBarMask;
-    [SerializeField]
-    private GameObject readySnowball;
-    [SerializeField]
-    private Snowball time;
+    private StatusBarAbilityController statusBarAbilityController;
 
 
     private Vector2 direction;
-    private float acceleration;
-    private bool isThrow = false;
+    private float acceleration;    
 
+    private const int notSnowball = 1;
+    private GameObject[] hippoSnowballSetArray;
+    private Transform[] hippoSnowballSetTransform;
+    private Rigidbody2D[] hippoSnowballSetRigidbody2D;
     void Start()
     {
+        hippoSnowballSetArray = new GameObject[hippoSnowballSet.transform.childCount- notSnowball];
+        hippoSnowballSetTransform = new Transform[hippoSnowballSet.transform.childCount- notSnowball];
+        hippoSnowballSetRigidbody2D = new Rigidbody2D[hippoSnowballSet.transform.childCount- notSnowball];
+        for (int i = 0; i < hippoSnowballSetArray.Length; i++)
+        {
+            hippoSnowballSetArray[i] = hippoSnowballSet.transform.GetChild(i).gameObject;
+            hippoSnowballSetTransform[i] = hippoSnowballSet.transform.GetChild(i).transform;
+            hippoSnowballSetRigidbody2D[i] = hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>();
+        }
+
         snowballButton.onClick.AddListener(delegate { ThrowSnowball(); });
         acceleration = 1;
         acceleration *= 1000f;
         direction = new Vector2(0.6f, 1f);
     }
-    //корутин продолжает работать, даже после выключение объекта...
-    IEnumerator RunTimer(GameObject snowball)
+    
+    IEnumerator Attack(GameObject snowball)
     {
-        readySnowball.SetActive(false);
-        abilityStatusBarMask.transform.localPosition = new Vector3(0f, abilityStatusBarMask.transform.localPosition.y, abilityStatusBarMask.transform.localPosition.z);
-        abilityStatusBar.SetActive(true);
-        yield return new WaitForSeconds(time.cooldown);
-        isThrow = false;
-        readySnowball.SetActive(true);
-        abilityStatusBar.SetActive(false);
-        yield return new WaitForSeconds(4f);
+        float timer = 0f;
+        do
+        {
+            timer += 0.01f;
+            yield return new WaitForSeconds(0.01f);
+        }
+        while (snowball.activeInHierarchy == true && timer <=4);        
         snowball.SetActive(false);
-        StopCoroutine(RunTimer(snowball));
+        yield break;
     }
 
     private void ThrowSnowball()
     {
-        if (!isThrow)
+        if (!StatusBarAbilityController.isThrow)
         {
-            for (int i = 0; i < hippoSnowballSet.transform.childCount; i++)
+            for (int i = 0; i < hippoSnowballSetArray.Length; i++)
             {
-                if (hippoSnowballSet.transform.GetChild(i).gameObject.activeInHierarchy == false)
+                if (hippoSnowballSetArray[i].activeInHierarchy == false)
                 {
-                    hippoSnowballSet.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
-                    hippoSnowballSet.transform.GetChild(i).gameObject.GetComponent<CircleCollider2D>().enabled = true;
+                    statusBarAbilityController.InvokeChangeStatus();
+                    StartCoroutine(Attack(hippoSnowballSetArray[i]));                    
 
-                    StartCoroutine(RunTimer(hippoSnowballSet.transform.GetChild(i).gameObject));
-                    hippoSnowballSet.transform.GetChild(i).transform.position = spawnPlace.transform.position;
-                    isThrow = true;
-                    hippoSnowballSet.transform.GetChild(i).gameObject.SetActive(true);
-                    hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass = 3f;
+                    hippoSnowballSetTransform[i].position = spawnPlace.position;                    
+                    hippoSnowballSetArray[i].SetActive(true);
+                    hippoSnowballSetRigidbody2D[i].mass = 3f;
 
                     if (slider.value < 0.2f)
                     {
                         direction = new Vector2(0.6f, 1f);
-                        hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass -= slider.value;                        
+                        hippoSnowballSetRigidbody2D[i].mass -= slider.value;                        
                     }
                     else if (slider.value < 0.4f)
                     {
-                        hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass -= slider.value + 0.2f;
+                        hippoSnowballSetRigidbody2D[i].mass -= slider.value + 0.2f;
                         direction = new Vector2(0.65f, 1f);
                     }
                     else if (slider.value < 0.6f)
                     {
                         direction = new Vector2(0.75f, 0.9f);
-                        hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass -= slider.value + 0.4f;
+                        hippoSnowballSetRigidbody2D[i].mass -= slider.value + 0.4f;
                     }
                     else if (slider.value < 0.8f)
                     {
                         direction = new Vector2(0.8f, 0.85f);
-                        hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass -= slider.value + 0.6f;
+                        hippoSnowballSetRigidbody2D[i].mass -= slider.value + 0.6f;
                     }
                     else if (slider.value <= 1f)
                     {
                         direction = new Vector2(0.85f, 0.8f);
-                        hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().mass -= slider.value + 0.8f;
+                        hippoSnowballSetRigidbody2D[i].mass -= slider.value + 0.8f;
                     }
-                    hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().AddForce(direction.normalized * acceleration);
+                    hippoSnowballSetRigidbody2D[i].AddForce(direction.normalized * acceleration);
 
                     //чем меньше радиус коллайдера, тем сильнее закручивается снежок.
-                    hippoSnowballSet.transform.GetChild(i).GetComponent<Rigidbody2D>().AddTorque(45);
+                    hippoSnowballSetRigidbody2D[i].AddTorque(45);
                     break;
                 }
             }
