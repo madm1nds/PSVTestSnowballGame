@@ -12,10 +12,24 @@ public class Settings : ScriptableObject
     [Header("-----------------------------------------------------------------------------")]
     public int pointsForVictory;
 
+    [Header("Режим уклоняшек")]
+    [Header("-----------------------------------------------------------------------------")]
+    public bool evasionMode;
+
+    [Header("Скорость перезарядки в обычном режиме")]
+    [Header("-----------------------------------------------------------------------------")]
+    public float cooldownSpeedNormalMode;
+
     [Header("Очки за попадания по противнику")]   
     public int pointsPumaPapa;
+    public int pointsPumaMama;
+    public int pointsPumaDaughter;
     public int pointsFoxSon;
+    public int pointsFoxPapa;
+    public int pointsFoxGrandma;
     public int pointsRaccoonPapa;
+    public int pointsRaccoonSon;
+    public int pointsRaccoonGrandpa;
 
     [Header("Скорость передвижения PumaPapa")]
     [Header("Свойства противников")]
@@ -24,15 +38,45 @@ public class Settings : ScriptableObject
     [Header("Перезарядка PumaPapa (для режима \"Уклоняшки\")")]
     public float speedCooldownPumaPapa;
 
+    [Header("Скорость передвижения PumaMama")]
+    public float speedPumaMama;
+    [Header("Перезарядка PumaMama (для режима \"Уклоняшки\")")]
+    public float speedCooldownPumaMama;
+
+    [Header("Скорость передвижения PumaDaughter")]
+    public float speedPumaDaughter;
+    [Header("Перезарядка PumaDaughter (для режима \"Уклоняшки\")")]
+    public float speedCooldownPumaDaughter;
+
     [Header("Скорость передвижения FoxSon")]
     public float speedFoxSon;
     [Header("Перезарядка FoxSon (для режима \"Уклоняшки\")")]
     public float speedCooldownFoxSon;
 
+    [Header("Скорость передвижения FoxPapa")]
+    public float speedFoxPapa;
+    [Header("Перезарядка FoxPapa (для режима \"Уклоняшки\")")]
+    public float speedCooldownFoxPapa;
+
+    [Header("Скорость передвижения FoxGrandma")]
+    public float speedFoxGrandma;
+    [Header("Перезарядка FoxGrandma (для режима \"Уклоняшки\")")]
+    public float speedCooldownFoxGrandma;
+
     [Header("Скорость передвижения RaccoonPapa")]
     public float speedRaccoonPapa;
     [Header("Перезарядка RaccoonPapa (для режима \"Уклоняшки\")")]
     public float speedCooldownRaccoonPapa;
+
+    [Header("Скорость передвижения RaccoonSon")]
+    public float speedRaccoonSon;
+    [Header("Перезарядка RaccoonSon (для режима \"Уклоняшки\")")]
+    public float speedCooldownRaccoonSon;
+
+    [Header("Скорость передвижения RaccoonGrandpa")]
+    public float speedRaccoonGrandpa;
+    [Header("Перезарядка RaccoonGrandpa (для режима \"Уклоняшки\")")]
+    public float speedCooldownRaccoonGrandpa;
 
     [Header("Вероятность остановки противника")]
     [Header("-----------------------------------------------------------------------------")]
@@ -45,9 +89,43 @@ public class Settings : ScriptableObject
     [Header("")]
     [Header("")]
     [SerializeField]
-    private EnemyPoints[] points;
+    private EnemyPoints pointsPumaPapaComponent;
     [SerializeField]
-    private Charactrer[] enemyCharacters;
+    private EnemyPoints pointsPumaMamaComponent;
+    [SerializeField]
+    private EnemyPoints pointsPumaDaughterComponent;
+    [SerializeField]
+    private EnemyPoints pointsFoxSonComponent;
+    [SerializeField]
+    private EnemyPoints pointsFoxPapaComponent;
+    [SerializeField]
+    private EnemyPoints pointsFoxGrandmaComponent;
+    [SerializeField]
+    private EnemyPoints pointsRaccoonPapaComponent;
+    [SerializeField]
+    private EnemyPoints pointsRaccoonSonComponent;
+    [SerializeField]
+    private EnemyPoints pointsRaccoonGrandpaComponent;
+    [Header("----------------------------------------")]
+    [SerializeField]
+    private Charactrer pumaPapaCharacters;
+    [SerializeField]
+    private Charactrer pumaMamaCharacters;
+    [SerializeField]
+    private Charactrer pumaDaughterCharacters;
+    [SerializeField]
+    private Charactrer foxSonCharacters;
+    [SerializeField]
+    private Charactrer foxPapaCharacters;
+    [SerializeField]
+    private Charactrer foxGrandmaCharacters;
+    [SerializeField]
+    private Charactrer raccoonPapaCharacters;
+    [SerializeField]
+    private Charactrer raccoonSonCharacters;
+    [SerializeField]
+    private Charactrer raccoonGrandpaCharacters;
+    [Header("----------------------------------------")]
     [SerializeField]
     private StoppingEnemy stoppingEnemy;
     [SerializeField]
@@ -59,17 +137,48 @@ public class Settings : ScriptableObject
 
     public void ApplySettings()
     {
-        points[0].enemyPoints = pointsPumaPapa;
-        points[1].enemyPoints = pointsFoxSon;
-        points[2].enemyPoints = pointsRaccoonPapa;
+        // Points
+        pointsPumaPapaComponent.enemyPoints = pointsPumaPapa;
+        pointsPumaMamaComponent.enemyPoints = pointsPumaMama;
+        pointsPumaDaughterComponent.enemyPoints = pointsPumaDaughter;
 
-        enemyCharacters[0].speedCharacter = speedPumaPapa;
-        enemyCharacters[0].speedCooldown = speedCooldownPumaPapa;
-        enemyCharacters[1].speedCharacter = speedFoxSon;
-        enemyCharacters[1].speedCooldown = speedCooldownFoxSon;
-        enemyCharacters[2].speedCharacter = speedRaccoonPapa;
-        enemyCharacters[2].speedCooldown = speedCooldownRaccoonPapa;
+        pointsFoxSonComponent.enemyPoints = pointsFoxSon;
+        pointsFoxPapaComponent.enemyPoints = pointsFoxPapa;
+        pointsFoxGrandmaComponent.enemyPoints = pointsFoxGrandma;
 
+        pointsRaccoonPapaComponent.enemyPoints = pointsRaccoonPapa;
+        pointsRaccoonSonComponent.enemyPoints = pointsRaccoonSon;
+        pointsRaccoonGrandpaComponent.enemyPoints = pointsRaccoonGrandpa;
+
+        // Chatacters
+        pumaPapaCharacters.speedCharacter = speedPumaPapa;
+        pumaPapaCharacters.speedCooldown = speedCooldownPumaPapa;
+
+        pumaMamaCharacters.speedCharacter = speedPumaMama;
+        pumaMamaCharacters.speedCooldown = speedCooldownPumaMama;
+
+        pumaDaughterCharacters.speedCharacter = speedPumaDaughter;
+        pumaDaughterCharacters.speedCooldown = speedCooldownPumaDaughter;
+
+        foxSonCharacters.speedCharacter = speedFoxSon;
+        foxSonCharacters.speedCooldown = speedCooldownFoxSon;
+
+        foxPapaCharacters.speedCharacter = speedFoxPapa;
+        foxPapaCharacters.speedCooldown = speedCooldownFoxPapa;
+
+        foxGrandmaCharacters.speedCharacter = speedFoxGrandma;
+        foxGrandmaCharacters.speedCooldown = speedCooldownFoxGrandma;
+
+        raccoonPapaCharacters.speedCharacter = speedRaccoonPapa;
+        raccoonPapaCharacters.speedCooldown = speedCooldownRaccoonPapa;
+
+        raccoonSonCharacters.speedCharacter = speedRaccoonSon;
+        raccoonSonCharacters.speedCooldown = speedCooldownRaccoonSon;
+
+        raccoonGrandpaCharacters.speedCharacter = speedRaccoonGrandpa;
+        raccoonGrandpaCharacters.speedCooldown = speedCooldownRaccoonGrandpa;
+
+        // Other
         stoppingEnemy.chance = chanceStop;
         stoppingEnemy.time = timeStop;
 

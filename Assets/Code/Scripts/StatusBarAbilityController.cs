@@ -32,7 +32,7 @@ public class StatusBarAbilityController : MonoBehaviour
         do
         {
             yield return new WaitForSeconds(0.01f);
-            statusBarAbilityMask.localPosition = new Vector3(statusBarAbilityMask.localPosition.x + ( (0.072f*selectedTime.cooldown / 10) / selectedTime.cooldown), statusBarAbilityMask.localPosition.y, statusBarAbilityMask.localPosition.z);
+            statusBarAbilityMask.localPosition = new Vector3(statusBarAbilityMask.localPosition.x + ( 0.072f / selectedTime.cooldown), statusBarAbilityMask.localPosition.y, statusBarAbilityMask.localPosition.z);
         } 
         while (statusBarAbilityMask.localPosition.x < 4.35f);
         isThrow = false;
