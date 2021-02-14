@@ -16,7 +16,7 @@ MonoBehaviour:
   speedCooldownHippo: 1
   pointsForVictory: 10
   evasionMode: 0
-  cooldownSpeedNormalMode: 5
+  cooldownSpeedNormalMode: 3
   pointsPumaPapa: 1
   pointsPumaMama: 1
   pointsPumaDaughter: 1

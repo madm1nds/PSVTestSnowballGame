@@ -16,26 +16,28 @@ public class SliderController : MonoBehaviour
 
     void Update()
     {
-        if (abilityStatusBar.activeInHierarchy == false)
+        if (PauseButtonController.isPause == false)
         {
-            if (slider.value < 1 && isDecreasing == false)
+            if (abilityStatusBar.activeInHierarchy == false)
             {
-                slider.value += 0.01f;
-            }
-            else if ((slider.value > 0 && isDecreasing == true) || slider.value >= 1)
-            {
-                isDecreasing = true;
-                slider.value -= 0.01f;                
+                if (slider.value < 1 && isDecreasing == false)
+                {
+                    slider.value += 0.01f;
+                }
+                else if ((slider.value > 0 && isDecreasing == true) || slider.value >= 1)
+                {
+                    isDecreasing = true;
+                    slider.value -= 0.01f;
+                }
+                else
+                {
+                    isDecreasing = false;
+                }
             }
             else
             {
-                isDecreasing = false;
+                slider.value = 0;
             }
         }
-        else
-        {
-            slider.value = 0;
-        }
-
     }
 }

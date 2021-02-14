@@ -42,16 +42,18 @@ public class EnemyController : MonoBehaviour
         }
         currentEnemySkeletonAnimation = gameObject.GetComponent<SkeletonAnimation>();
         currentEnemyTransform = gameObject.transform;
+        StartCoroutine(StartMyCoroutines());
     }
-    void Update()
+
+    IEnumerator StartMyCoroutines()
     {
         if (isStartedCoroutine == false)
         {
-            //isMoveOut = false;
             isStartedCoroutine = true;
             StartCoroutine(MoveEnemy());
             StartCoroutine(Attack());
         }
+        yield return new WaitForSeconds(0.2f);
     }
     IEnumerator Attack()
     {
@@ -62,8 +64,8 @@ public class EnemyController : MonoBehaviour
         {
             for (int i = 0; i < enemySnowballSetArray.Length; i++)
             {
-                if ((globalSettings.evasionMode == true && !isMoveOut) ||
-                    (globalSettings.evasionMode == false && EnemyCooldownNormalMode.currentTime >= globalSettings.cooldownSpeedNormalMode && !isMoveOut))
+                if (PauseButtonController.isPause == false && ((globalSettings.evasionMode == true && !isMoveOut) ||
+                    (globalSettings.evasionMode == false && EnemyCooldownNormalMode.currentTime >= globalSettings.cooldownSpeedNormalMode && !isMoveOut)))
                 {
                     if (enemySnowballSetArray[i].activeInHierarchy == false && enemySnowballSetArray[i].tag == "EnemySnowball")
                     {
@@ -79,8 +81,10 @@ public class EnemyController : MonoBehaviour
                     else if (enemySnowballSetArray[i].activeInHierarchy == true && enemySnowballSetArray[i].tag == "EnemySnowball")
                     {
                         isEnable++;
+                        
                     }
                 }
+                yield return new WaitForSeconds(0.2f);
             }
             if (isEnable >= enemySnowballSetArray.Length - 2)
             {
@@ -89,8 +93,9 @@ public class EnemyController : MonoBehaviour
             else
             {
                 isEnable = 0;
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.2f);
             }
+            
         } while (true);
 
     }
@@ -99,13 +104,22 @@ public class EnemyController : MonoBehaviour
     {
         float timer = 0f;
         Transform enemySnowballTransform = enemySnowball.transform;
+        CircleCollider2D enemySnowballCollider = enemySnowball.GetComponent<CircleCollider2D>();
         do
         {
-            timer += 0.01f;
-            enemySnowballTransform.position = Vector3.MoveTowards(enemySnowballTransform.position, target.position, 0.25f);
-            enemySnowballTransform.Rotate(0, 0, 15f);
-            target.position = Vector3.MoveTowards(target.position, enemySnowballTransform.position, -0.25f);
-            yield return new WaitForSeconds(0.01f);
+            if (PauseButtonController.isPause == false && enemySnowballCollider.enabled == true)
+            {
+                timer += 0.015f;
+                enemySnowballTransform.position = Vector3.MoveTowards(enemySnowballTransform.position, target.position, 0.25f);
+                enemySnowballTransform.Rotate(0, 0, 15f);
+                target.position = Vector3.MoveTowards(target.position, enemySnowballTransform.position, -0.25f);
+                yield return new WaitForSeconds(0.015f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.2f);
+            }
+
         } while (enemySnowball.activeInHierarchy == true && timer <= 4);
         enemySnowball.SetActive(false);
         yield break;
@@ -119,9 +133,8 @@ public class EnemyController : MonoBehaviour
 
         do
         {
-            if (!isMoveOut)
+            if (PauseButtonController.isPause == false && !isMoveOut)
             {
-                currentEnemySkeletonAnimation.AnimationName = "run";
                 newLocation = Random.Range(ScreenBoundarySeeker.screenBoundary_y_bottom, ScreenBoundarySeeker.screenBoundary_y_top);
 
                 if (System.Math.Abs(System.Math.Abs(currentEnemyTransform.position.y) - System.Math.Abs(newLocation)) >= minDistance)
@@ -137,22 +150,30 @@ public class EnemyController : MonoBehaviour
                         {
                             while (currentEnemyTransform.position.y > newLocation)
                             {
-                                currentEnemyTransform.position = new Vector3(currentEnemyTransform.position.x, currentEnemyTransform.position.y - (characterSettings.speedCharacter / 10), currentEnemyTransform.position.z);
-                                
-                                currentEnemyTransform.localScale = new Vector3(currentEnemyTransform.localScale.x + (characterSettings.speedCharacter * 0.005f),
-                                        currentEnemyTransform.localScale.y + (characterSettings.speedCharacter * 0.005f), currentEnemyTransform.localScale.z);
-                                yield return new WaitForSeconds(0.01f);
+                                if (PauseButtonController.isPause == false)
+                                {
+                                    currentEnemySkeletonAnimation.AnimationName = "run";
+                                    currentEnemyTransform.position = new Vector3(currentEnemyTransform.position.x, currentEnemyTransform.position.y - (characterSettings.speedCharacter / 10), currentEnemyTransform.position.z);
+
+                                    currentEnemyTransform.localScale = new Vector3(currentEnemyTransform.localScale.x + (characterSettings.speedCharacter * 0.005f),
+                                            currentEnemyTransform.localScale.y + (characterSettings.speedCharacter * 0.005f), currentEnemyTransform.localScale.z);
+                                }
+                                yield return new WaitForSeconds(0.015f);
                             }
                         }
                         else
                         {
                             while (currentEnemyTransform.position.y < newLocation)
                             {
-                                currentEnemyTransform.position = new Vector3(currentEnemyTransform.position.x, currentEnemyTransform.position.y + (characterSettings.speedCharacter / 10), currentEnemyTransform.position.z);
-                                
-                                currentEnemyTransform.localScale = new Vector3(currentEnemyTransform.localScale.x - (characterSettings.speedCharacter * 0.005f),
-                                        currentEnemyTransform.localScale.y - (characterSettings.speedCharacter * 0.005f), currentEnemyTransform.localScale.z);
-                                yield return new WaitForSeconds(0.01f);
+                                if (PauseButtonController.isPause == false)
+                                {
+                                    currentEnemySkeletonAnimation.AnimationName = "run";
+                                    currentEnemyTransform.position = new Vector3(currentEnemyTransform.position.x, currentEnemyTransform.position.y + (characterSettings.speedCharacter / 10), currentEnemyTransform.position.z);
+
+                                    currentEnemyTransform.localScale = new Vector3(currentEnemyTransform.localScale.x - (characterSettings.speedCharacter * 0.005f),
+                                            currentEnemyTransform.localScale.y - (characterSettings.speedCharacter * 0.005f), currentEnemyTransform.localScale.z);
+                                }
+                                yield return new WaitForSeconds(0.015f);
                             }
                         }
                     }

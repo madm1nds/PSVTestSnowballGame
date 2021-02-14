@@ -22,47 +22,56 @@ public class TimerRoundController : MonoBehaviour
     }
     IEnumerator RunTimer()
     {
+        string currentTimeString = "";
         do
-        {            
-            string currentTimeString = "";            
+        {     
+            if (PauseButtonController.isPause == false)
+            {
+                currentTimeString = "";
+
+                currentTime++;
+                minutes = currentTime / 60;
+                seconds = currentTime - (60 * minutes);
+                if (minutes < 10)
+                {
+                    if (minutes == 0)
+                    {
+                        currentTimeString += "00:";
+                    }
+                    else
+                    {
+                        currentTimeString += "0" + minutes + ":";
+                    }
+                }
+                else
+                {
+                    currentTimeString += minutes + ":";
+                }
+
+
+                if (seconds < 10)
+                {
+                    if (seconds == 0)
+                    {
+                        currentTimeString += "00";
+                    }
+                    else
+                    {
+                        currentTimeString += "0" + seconds;
+                    }
+                }
+                else
+                {
+                    currentTimeString += seconds;
+                }
+                textPictureConverter.SetImageNumber(timerSet, currentTimeString, 10, 10, AlignmentTextPicture.Right);
+                yield return new WaitForSeconds(1f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
             
-            currentTime++;
-            minutes = currentTime / 60;
-            seconds = currentTime - (60 * minutes);
-            if (minutes < 10)
-            {
-                if (minutes == 0)
-                {
-                    currentTimeString += "00:";
-                }
-                else
-                {
-                    currentTimeString += "0" + minutes + ":";
-                }
-            }
-            else
-            {
-                currentTimeString += minutes + ":";
-            }
-
-
-            if (seconds < 10)
-            {
-                if (seconds == 0)
-                {
-                    currentTimeString += "00";
-                }
-                else
-                {
-                    currentTimeString += "0" + seconds;
-                }
-            }
-            else
-            {
-                currentTimeString += seconds;
-            }
-            textPictureConverter.SetImageNumber(timerSet, currentTimeString, 10, 10, AlignmentTextPicture.Right);
-            yield return new WaitForSeconds(1f);
         } while (true);
     }
 }

@@ -39,7 +39,8 @@ public class HitHippo : MonoBehaviour
     {
         if (other.tag == "EnemySnowball")
         {
-            other.gameObject.SetActive(false);
+            StartCoroutine(WaitOffTrail(other.gameObject));
+            //other.gameObject.SetActive(false);
             for (int i = 0; i < particlesSetArray.Length; i++)
             {
                 if (particlesSetArray[i].activeInHierarchy == false)
@@ -59,6 +60,16 @@ public class HitHippo : MonoBehaviour
                 }
             }
         }
+    }
+    IEnumerator WaitOffTrail(GameObject other)
+    {
+        other.GetComponent<CircleCollider2D>().enabled = false;
+        other.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 0);
+        yield return new WaitForSeconds(1f);
+        other.GetComponent<CircleCollider2D>().enabled = true;
+        other.gameObject.SetActive(false);
+        other.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+        yield break;
     }
     IEnumerator TurnOffParticles(GameObject particles)
     {

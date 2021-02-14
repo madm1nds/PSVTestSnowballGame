@@ -14,6 +14,7 @@ public class SnowballButton : MonoBehaviour
     private GameObject hippoSnowballSet;
     [SerializeField]
     private StatusBarAbilityController statusBarAbilityController;
+    
 
 
     private Vector2 direction;
@@ -44,10 +45,19 @@ public class SnowballButton : MonoBehaviour
     IEnumerator Attack(GameObject snowball)
     {
         float timer = 0f;
+        Rigidbody2D rb = snowball.GetComponent<Rigidbody2D>();
         do
         {
-            timer += 0.01f;
-            yield return new WaitForSeconds(0.01f);
+            if (PauseButtonController.isPause == false)
+            {
+                rb.simulated = true;
+                timer += 0.018f;
+            }
+            else
+            {
+                rb.simulated = false;
+            }
+            yield return new WaitForSeconds(0.001f);
         }
         while (snowball.activeInHierarchy == true && timer <=4);        
         snowball.SetActive(false);

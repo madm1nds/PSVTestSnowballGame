@@ -13,10 +13,23 @@ public class TimerCooldownNormalModeController : MonoBehaviour
     }
     IEnumerator RunTimerCooldownNormalMode()
     {
+        float time;
+        time = 0;
         do
-        {           
-            yield return new WaitForSeconds(globalSettings.cooldownSpeedNormalMode);
+        {
+
+            do
+            {
+                if (PauseButtonController.isPause == false)
+                {
+                    time += 0.1f;
+                }
+                yield return new WaitForSeconds(0.093f);
+            } while (time < globalSettings.cooldownSpeedNormalMode);
+
+            time = 0;
             EnemyCooldownNormalMode.currentTime = globalSettings.cooldownSpeedNormalMode;
+
         } while (true);
     }
 }
