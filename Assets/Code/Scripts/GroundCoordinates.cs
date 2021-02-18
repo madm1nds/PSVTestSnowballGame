@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
-
-
+/// <summary>
+/// Класс, который определяет границы экрана, в случае если высота изменяется, а ширина постоянна
+/// </summary>
 public static class GroundCoordinates
 {
     public static float correctionBottom;
@@ -37,10 +38,8 @@ public static class GroundCoordinates
 
     private static void CorrectBottomСoordinates(Camera cam)
     {
-        // 131 это граница, где нужно прибавлять ещё больше коррекции
         if (cam.fieldOfView < 131)
         {
-            // Если значение меньше 95, то тоже надо прибавлять больше коррекции.
             if (cam.fieldOfView >= 95)
             {
                 correctionBottom = cam.fieldOfView * 0.15f;
@@ -48,15 +47,15 @@ public static class GroundCoordinates
             else
             {
                 correctionBottom = cam.fieldOfView * ((Math.Abs(cam.fieldOfView - 95) / 500) + 0.15f);
-            }            
+            }
         }
         else
         {
             correctionBottom = cam.fieldOfView * ((Math.Abs(cam.fieldOfView - 131) / 500) + 0.15f);
         }
-                
+
         correctionTop = Math.Abs(correctionBottom); correctionTop -= 26;
-        // Коррекция для нижнего барьера всегда должна быть отрицательной
-        correctionBottom = -Math.Abs(correctionBottom); correctionBottom += 10;      
+
+        correctionBottom = -Math.Abs(correctionBottom); correctionBottom += 10;
     }
 }

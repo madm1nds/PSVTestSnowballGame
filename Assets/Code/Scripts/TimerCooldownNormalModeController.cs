@@ -6,14 +6,15 @@ public class TimerCooldownNormalModeController : MonoBehaviour
 {
     [SerializeField]
     private Settings globalSettings;
+    public static float time;
+    public static bool isTimeOut;
 
     void Start()
     {
         StartCoroutine(RunTimerCooldownNormalMode());
     }
     IEnumerator RunTimerCooldownNormalMode()
-    {
-        float time;
+    {       
         time = 0;
         do
         {
@@ -28,7 +29,7 @@ public class TimerCooldownNormalModeController : MonoBehaviour
             } while (time < globalSettings.cooldownSpeedNormalMode);
 
             time = 0;
-            EnemyCooldownNormalMode.currentTime = globalSettings.cooldownSpeedNormalMode;
+            isTimeOut = true;
 
         } while (true);
     }

@@ -3,7 +3,8 @@
 
 public class ScoreSetController : MonoBehaviour
 {
-    private static int scorePlayer;
+    public static ScoreSetController instance;
+    public static int scorePlayer;
     private static string stringScorePlayer;
     [SerializeField]
     private TextPictureConverter textPictureConverter;
@@ -19,6 +20,10 @@ public class ScoreSetController : MonoBehaviour
     }
     void Start()
     {
+        if (instance is null)
+        {
+            instance = gameObject.transform.GetComponent<ScoreSetController>();
+        }
         RefreshPoints(0);
     }
 }

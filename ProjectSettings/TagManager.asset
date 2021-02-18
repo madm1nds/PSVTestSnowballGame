@@ -6,7 +6,14 @@ TagManager:
   tags:
   - Snowball
   - EnemySnowball
-  - B1
+  - RetryButton
+  - SelectLevelButton
+  - TextVictoryBoard
+  - RunLevel
+  - ItemsButton
+  - StartGameButton
+  - SettingsButton
+  - BackButton
   layers:
   - Default
   - TransparentFX

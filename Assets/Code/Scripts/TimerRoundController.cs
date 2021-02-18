@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,19 +16,21 @@ public class TimerRoundController : MonoBehaviour
     private int minutes;
     private int seconds;
 
+    StringBuilder currentTimeString;
+
     void Start()
     {
         currentTime = -1;
+        currentTimeString = new StringBuilder();
         StartCoroutine(RunTimer());
     }
     IEnumerator RunTimer()
-    {
-        string currentTimeString = "";
+    {       
         do
         {     
             if (PauseButtonController.isPause == false)
             {
-                currentTimeString = "";
+                currentTimeString.Length = 0;
 
                 currentTime++;
                 minutes = currentTime / 60;
@@ -36,16 +39,16 @@ public class TimerRoundController : MonoBehaviour
                 {
                     if (minutes == 0)
                     {
-                        currentTimeString += "00:";
+                        currentTimeString.Append("00:");
                     }
                     else
                     {
-                        currentTimeString += "0" + minutes + ":";
+                        currentTimeString.Append("0" + minutes + ":");
                     }
                 }
                 else
                 {
-                    currentTimeString += minutes + ":";
+                    currentTimeString.Append(minutes + ":");
                 }
 
 
@@ -53,18 +56,18 @@ public class TimerRoundController : MonoBehaviour
                 {
                     if (seconds == 0)
                     {
-                        currentTimeString += "00";
+                        currentTimeString.Append("00");
                     }
                     else
                     {
-                        currentTimeString += "0" + seconds;
+                        currentTimeString.Append("0" + seconds);
                     }
                 }
                 else
                 {
-                    currentTimeString += seconds;
+                    currentTimeString.Append(seconds);
                 }
-                textPictureConverter.SetImageNumber(timerSet, currentTimeString, 10, 10, AlignmentTextPicture.Right);
+                textPictureConverter.SetImageNumber(timerSet, currentTimeString.ToString(), 10, 10, AlignmentTextPicture.Right);
                 yield return new WaitForSeconds(1f);
             }
             else

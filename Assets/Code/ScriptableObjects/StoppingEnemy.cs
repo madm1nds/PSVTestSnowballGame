@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+/// <summary>
+/// Определяет вероятность остановки противников и время остановки противников.
+/// </summary>
 [CreateAssetMenu(menuName = "Settings/StoppingEnemy")]
 public class StoppingEnemy : ScriptableObject
 {

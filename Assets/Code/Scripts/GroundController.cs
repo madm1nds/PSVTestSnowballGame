@@ -1,7 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Класс, который размещает ключевые элементы уровня (Tilemaps) по необходимым координатам.
+/// </summary>
 public class GroundController : MonoBehaviour
 {
     [SerializeField]
@@ -19,12 +20,11 @@ public class GroundController : MonoBehaviour
     private GameObject player;
     IEnumerator SetGround()
     {
-        // Задержка, так как камера не успевает принять нужный вид.
         yield return new WaitForSeconds(0.001f);
         GroundCoordinates.SetGround(groundBottom, groundTop, groundLeft, groundCenter, player, cam);
-        yield break;        
+        yield break;
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         StartCoroutine(SetGround());

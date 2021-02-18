@@ -6,10 +6,12 @@ public class VictoryTableController : MonoBehaviour
 {
     RaycastHit hit;
     Ray ray;
+    Camera mainCamera;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -17,15 +19,35 @@ public class VictoryTableController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log("Мы попали в: " + hit.collider.gameObject.name);
-                if (hit.collider.tag == "B1")
+            {             
+                if (hit.collider.CompareTag("RunLevel"))
                 {
-                    
+                    AnimationActions.currentNameAnimation = AnimationActions.NameAnimation.TurnOffPause;
+                    Vault.instance.gameObjectVictoryBoard.GetComponent<Animator>().SetTrigger("Exit");
+#pragma warning disable CS0618 // Тип или член устарел
+                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8;
+                }
+                if (hit.collider.CompareTag("RetryButton"))
+                {
+                    AnimationActions.currentNameAnimation = AnimationActions.NameAnimation.ResetLevel;
+                    Vault.instance.gameObjectVictoryBoard.GetComponent<Animator>().SetTrigger("Exit");
+#pragma warning disable CS0618 // Тип или член устарел
+                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8;
+                }
+                if (hit.collider.CompareTag("SelectLevelButton"))
+                {
+                    AnimationActions.currentNameAnimation = AnimationActions.NameAnimation.SelectLevel;
+                    Vault.instance.gameObjectVictoryBoard.GetComponent<Animator>().SetTrigger("Exit");
+#pragma warning disable CS0618 // Тип или член устарел
+                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8;
                 }
             }
         }  
+    }
+    void ResetCurrentLevel()
+    {
+
     }
 }

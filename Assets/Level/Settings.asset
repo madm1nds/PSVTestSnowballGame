@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65f5802f74d5bc84fa46288fd4d5f8b1, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  speedHippo: 1.8
-  speedCooldownHippo: 1
-  pointsForVictory: 10
+  isMove_y: 1
   evasionMode: 0
-  cooldownSpeedNormalMode: 3
+  mode_2_5D: 1
+  speedThrowPower: 1
+  speedHippo: 1.8
+  speedCooldownHippo: 0.6
+  pointsForVictory: 1
+  cooldownSpeedNormalMode: 5
   pointsPumaPapa: 1
   pointsPumaMama: 1
   pointsPumaDaughter: 1
@@ -27,23 +30,32 @@ MonoBehaviour:
   pointsRaccoonSon: 3
   pointsRaccoonGrandpa: 3
   speedPumaPapa: 0.5
-  speedCooldownPumaPapa: 3
   speedPumaMama: 0.5
-  speedCooldownPumaMama: 3
   speedPumaDaughter: 0.7
-  speedCooldownPumaDaughter: 2
   speedFoxSon: 0.7
-  speedCooldownFoxSon: 2
   speedFoxPapa: 0.6
-  speedCooldownFoxPapa: 3
   speedFoxGrandma: 0.4
-  speedCooldownFoxGrandma: 4
   speedRaccoonPapa: 0.5
-  speedCooldownRaccoonPapa: 3
   speedRaccoonSon: 0.7
-  speedCooldownRaccoonSon: 2
   speedRaccoonGrandpa: 0.4
+  speedCooldownPumaPapa: 3
+  speedCooldownPumaMama: 3
+  speedCooldownPumaDaughter: 2
+  speedCooldownFoxSon: 2
+  speedCooldownFoxPapa: 3
+  speedCooldownFoxGrandma: 4
+  speedCooldownRaccoonPapa: 3
+  speedCooldownRaccoonSon: 2
   speedCooldownRaccoonGrandpa: 4
+  speedSnowballPumaPapa: 0.7
+  speedSnowballPumaMama: 0.7
+  speedSnowballPumaDaughter: 0.7
+  speedSnowballFoxSon: 0.7
+  speedSnowballFoxPapa: 0.7
+  speedSnowballFoxGrandma: 0.7
+  speedSnowballRaccoonPapa: 0.7
+  speedSnowballRaccoonSon: 0.7
+  speedSnowballRaccoonGrandpa: 0.7
   chanceStop: 0.1
   timeStop: 2
   pointsPumaPapaComponent: {fileID: 11400000, guid: 820e41c8556ddec44b8eb26865f26f33,

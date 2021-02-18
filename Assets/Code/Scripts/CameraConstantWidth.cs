@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Keeps constant camera width instead of height, works for both Orthographic & Perspective cameras
-/// Author https://youtu.be/0cmxFjP375Y
+/// Сохраняет постоянную ширину камеры вместо высоты, работает как для ортогональных, так и для перспективных камер.
+/// Автор  https://youtu.be/0cmxFjP375Y
 /// </summary>
 public class CameraConstantWidth : MonoBehaviour
 {

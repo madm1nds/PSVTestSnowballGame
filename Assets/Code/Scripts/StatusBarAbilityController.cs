@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StatusBarAbilityController : MonoBehaviour
 {
+    public static StatusBarAbilityController instance;
     [SerializeField]
     private Transform statusBarAbilityMask;
     [SerializeField]
@@ -14,13 +15,16 @@ public class StatusBarAbilityController : MonoBehaviour
     [SerializeField]
     private GameObject readySnowball;
 
-    private GameObject statusBarAbilityGameObject;
     public static bool isThrow = false;
 
-    // Start is called before the first frame update
     void Start()
     {
-        statusBarAbilityGameObject = statusBarAbility.gameObject;
+        if (instance is null)
+        {
+            instance = gameObject.transform.GetComponent<StatusBarAbilityController>();
+        }
+
+        InvokeChangeStatus();
     }
 
     IEnumerator ChangeStatus()

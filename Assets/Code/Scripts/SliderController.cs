@@ -9,9 +9,10 @@ public class SliderController : MonoBehaviour
     private GameObject abilityStatusBar;
 
     private bool isDecreasing;
+    private float speedThrowPower;
     void Start()
     {
-
+        speedThrowPower = Vault.instance.settings.speedThrowPower / 100;
     }
 
     void Update()
@@ -22,12 +23,12 @@ public class SliderController : MonoBehaviour
             {
                 if (slider.value < 1 && isDecreasing == false)
                 {
-                    slider.value += 0.01f;
+                    slider.value += speedThrowPower;
                 }
                 else if ((slider.value > 0 && isDecreasing == true) || slider.value >= 1)
                 {
                     isDecreasing = true;
-                    slider.value -= 0.01f;
+                    slider.value -= speedThrowPower;
                 }
                 else
                 {

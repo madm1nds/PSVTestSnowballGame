@@ -1,9 +1,14 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Spine.Unity;
-
+/// <summary>
+/// Добавляет логику для кнопки "PauseButton" в игровом уровне.
+/// Содержит метод для "заморозки" игрового пространства.
+/// isPause - находится ли игра на паузе.
+/// pauseButton - кнопка паузы.
+/// screenLock - прозрачная картинка для блокирования интерфейса.
+/// </summary>
 public class PauseButtonController : MonoBehaviour
 {
     public static bool isPause;
@@ -12,39 +17,80 @@ public class PauseButtonController : MonoBehaviour
     [SerializeField]
     private GameObject screenLock;
     [SerializeField]
-    private GameObject enemies;
 
-    private SkeletonAnimation[] animationEnemies;
-    // Start is called before the first frame update
+    public static PauseButtonController instance;
+
     void Start()
     {
-        animationEnemies = new SkeletonAnimation[enemies.transform.childCount];
-        for (int i = 0; i < animationEnemies.Length; i++)
+        if (instance is null)
         {
-            animationEnemies[i] = enemies.transform.GetChild(i).GetComponent<SkeletonAnimation>();
+            instance = gameObject.transform.GetComponent<PauseButtonController>();
         }
+
         isPause = false;
         pauseButton.onClick.AddListener(delegate { clickOnPause(); });
+        clickOnPause();
+        Vault.instance.gameObjectVictoryBoard.SetActive(false);
     }
-
-    void clickOnPause()
+    /// <summary>
+    /// Включает паузу. Меняет состояние isPause.
+    /// </summary>
+    public void clickOnPause()
     {
 
         if (isPause == false)
         {
-            for (int i = 0; i < animationEnemies.Length; i++)
+            for (int i = 0; i < Vault.instance.skeletonAnimationEnemies.Length; i++)
             {
-                if (enemies.transform.GetChild(i).gameObject.activeInHierarchy == true)
+                if (Vault.instance.skeletonAnimationEnemies[i].gameObject.activeInHierarchy == true)
                 {
-                    animationEnemies[i].AnimationName = "Idle";
+                    Vault.instance.skeletonAnimationEnemies[i].AnimationName = "Idle";
                 }
             }
+            Vault.instance.gameObjectVictoryBoard.SetActive(true);
+            Vault.instance.gameObjectVictoryBoardRunLevel.SetActive(true);
+            Vault.instance.gameObjectStarLeft.SetActive(false);
+            Vault.instance.gameObjectStarCenter.SetActive(false);
+            Vault.instance.gameObjectStarRight.SetActive(false);
+            Vault.instance.spriteRendererTextVictoryBoard.sprite = Vault.instance.spritePauseRus;
             screenLock.SetActive(true);
         }
         else
         {
             screenLock.SetActive(false);
         }
+        StartCoroutine(ChangeTransparent(isPause));
         isPause = !isPause;
+    }
+    /// <summary>
+    /// В зависимости от состояния паузы постепенно делает видимым/невидимым интерфейс.
+    /// </summary>
+    /// <param name="isPause">Состояние паузы</param>
+    IEnumerator ChangeTransparent(bool isPause)
+    {
+        const float speedChange = 0.05f;
+        if (isPause == false)
+        {
+            do
+            {
+                for (int i = 0; i < Vault.instance.imageGameLevelUI.Length; i++)
+                {
+                    Vault.instance.imageGameLevelUI[i].color = new Vector4(1, 1, 1, Vault.instance.imageGameLevelUI[i].color.a - speedChange);
+                }
+                yield return new WaitForSeconds(0.015f);
+            } while (Vault.instance.imageGameLevelUI[0].color.a > 0);
+        }
+        else
+        {
+            do
+            {
+                for (int i = 0; i < Vault.instance.imageGameLevelUI.Length; i++)
+                {
+                    Vault.instance.imageGameLevelUI[i].color = new Vector4(1, 1, 1, Vault.instance.imageGameLevelUI[i].color.a + speedChange*3);
+                }
+                yield return new WaitForSeconds(0.015f);
+            } while (Vault.instance.imageGameLevelUI[0].color.a < 1);
+        }
+        yield break;
     }
 }

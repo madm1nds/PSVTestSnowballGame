@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class EnemyNewLocation 
+﻿using UnityEngine;
+/// <summary>
+/// Статический класс определения новой позиции для нового противника
+/// </summary>
+public static class EnemyNewLocation
 {
     static int currentLocation;
-    static  bool  isEmpty;
+    static bool isEmpty;
     public static Vector3 GetNewLocation(Transform enemy)
     {
         isEmpty = true;
@@ -14,7 +14,7 @@ public static class EnemyNewLocation
         {
             currentLocation = Random.Range(3, 10);
 
-            foreach (var coordinates in StartEnemyLocation.locations)
+            foreach (var coordinates in EnemyStartLocation.locations)
             {
                 if (coordinates.Key == currentLocation && coordinates.Value == false)
                 {
@@ -23,8 +23,8 @@ public static class EnemyNewLocation
             }
             if (isEmpty == false)
             {
-                StartEnemyLocation.locations.Remove(currentLocation);
-                StartEnemyLocation.locations.Add(currentLocation, true);
+                EnemyStartLocation.locations.Remove(currentLocation);
+                EnemyStartLocation.locations.Add(currentLocation, true);
                 return new Vector3(currentLocation, enemy.position.y, enemy.position.z);
             }
         } while (isEmpty == true);
