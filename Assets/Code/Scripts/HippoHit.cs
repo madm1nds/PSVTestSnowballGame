@@ -7,10 +7,10 @@ public class HippoHit : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D enemySnowball)
     {
-        if (enemySnowball.tag == "EnemySnowball")
+        if (enemySnowball.CompareTag("EnemySnowball"))
         {
             enemySnowball.GetComponent<CircleCollider2D>().enabled = false;
-            enemySnowball.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 0);
+            enemySnowball.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 0);            
             for (int i = 0; i < Vault.instance.gameObjectsEnemySetParticleSystems.Length; i++)
             {
                 if (Vault.instance.gameObjectsEnemySetParticleSystems[i].activeInHierarchy == false)
@@ -32,7 +32,7 @@ public class HippoHit : MonoBehaviour
                             break;
                         case 0:
                             Vault.instance.imageUIHearts[2].sprite = Vault.instance.spriteBrokenHeart;
-                            PauseButtonController.instance.clickOnPause();
+                            PauseButtonController.instance.ClickOnPause();
                             Vault.instance.gameObjectVictoryBoard.SetActive(true);
                             Vault.instance.gameObjectVictoryBoardRunLevel.SetActive(false);
                             Vault.instance.gameObjectStarLeft.SetActive(true);

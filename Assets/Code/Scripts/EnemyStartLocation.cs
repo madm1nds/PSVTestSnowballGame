@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// Определяет страртовую позицию при загрузке уровня.
@@ -44,12 +45,13 @@ public class EnemyStartLocation : MonoBehaviour
         enemyLevels[2] = enemyLevel_3;
         enemyLevels[3] = enemyLevel_4;
         enemyLevels[4] = enemyLevel_5;
+        StartCoroutine(ResetLocation(1));
     }
     /// <summary>
     /// Запуск определения страртовой позиции при загрузке уровня.
     /// </summary>
     /// <param name="numberLevel">Номер загружаемого уровня</param>
-    public void ResetLocation(int numberLevel)
+    public IEnumerator ResetLocation(int numberLevel)
     {
         TimerCooldownNormalModeController.isTimeOut = false;
         TimerCooldownNormalModeController.time = 0;
@@ -61,20 +63,20 @@ public class EnemyStartLocation : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < Vault.instance.gameObjectEnemies.transform.childCount; i++)
+        for (int i = 0; i < Vault.instance.transformGameObjectEnemies.Length; i++)
         {
-            Vault.instance.gameObjectEnemies.transform.GetChild(i).gameObject.SetActive(false);
-            Vault.instance.gameObjectEnemies.transform.GetChild(i).localScale = new Vector3(defaultScale, defaultScale, defaultScale);
-            Vault.instance.gameObjectEnemies.transform.GetChild(i).GetComponent<EnemyController>().isMoveOut = false;
-            Vault.instance.gameObjectEnemies.transform.GetChild(i).GetComponent<EnemyController>().isStartedCoroutine = false;
+            Vault.instance.transformGameObjectEnemies[i].gameObject.SetActive(false);
+            Vault.instance.transformGameObjectEnemies[i].localScale = new Vector3(defaultScale, defaultScale, defaultScale);
+            Vault.instance.enemyControllers[i].isMoveOut = false;
+            Vault.instance.enemyControllers[i].isStartedCoroutine = false;
 
-            if (Vault.instance.gameObjectEnemies.transform.GetChild(i).transform.rotation.y == 1)
+            if (Vault.instance.transformGameObjectEnemies[i].transform.rotation.y == 1)
             {
-                Vault.instance.gameObjectEnemies.transform.GetChild(i).transform.Rotate(0, -180, 0);
+                Vault.instance.transformGameObjectEnemies[i].transform.Rotate(0, -180, 0);
             }
-            if (Vault.instance.gameObjectEnemies.transform.GetChild(i).transform.rotation.y == -1)
+            if (Vault.instance.transformGameObjectEnemies[i].transform.rotation.y == -1)
             {
-                Vault.instance.gameObjectEnemies.transform.GetChild(i).transform.Rotate(0, 180, 0);
+                Vault.instance.transformGameObjectEnemies[i].transform.Rotate(0, 180, 0);
             }
         }
 
@@ -91,6 +93,7 @@ public class EnemyStartLocation : MonoBehaviour
         }
 
         Vault.instance.gameObjectEnemies.SetActive(true);
+        yield break;
     }
     private void SetStartLocation(Transform enemy)
     {

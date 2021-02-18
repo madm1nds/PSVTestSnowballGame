@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
-using Spine.Unity;
 /// <summary>
 /// Добавляет логику для кнопки "PauseButton" в игровом уровне.
 /// Содержит метод для "заморозки" игрового пространства.
 /// isPause - находится ли игра на паузе.
 /// pauseButton - кнопка паузы.
 /// screenLock - прозрачная картинка для блокирования интерфейса.
+/// isStart - игра была только что запущена.
 /// </summary>
 public class PauseButtonController : MonoBehaviour
 {
@@ -16,9 +16,9 @@ public class PauseButtonController : MonoBehaviour
     private Button pauseButton;
     [SerializeField]
     private GameObject screenLock;
-    [SerializeField]
 
     public static PauseButtonController instance;
+    private static bool isStart;
 
     void Start()
     {
@@ -26,16 +26,16 @@ public class PauseButtonController : MonoBehaviour
         {
             instance = gameObject.transform.GetComponent<PauseButtonController>();
         }
-
+        isStart = true;
         isPause = false;
-        pauseButton.onClick.AddListener(delegate { clickOnPause(); });
-        clickOnPause();
+        pauseButton.onClick.AddListener(delegate { ClickOnPause(); });
+        ClickOnPause();
         Vault.instance.gameObjectVictoryBoard.SetActive(false);
     }
     /// <summary>
     /// Включает паузу. Меняет состояние isPause.
     /// </summary>
-    public void clickOnPause()
+    public void ClickOnPause()
     {
 
         if (isPause == false)
@@ -67,16 +67,22 @@ public class PauseButtonController : MonoBehaviour
     /// </summary>
     /// <param name="isPause">Состояние паузы</param>
     IEnumerator ChangeTransparent(bool isPause)
-    {
+    {        
         const float speedChange = 0.05f;
         if (isPause == false)
         {
+            if (isStart == false)
+            {
+                StartCoroutine(AnimationActions.instance.ShowSpriteRendererObject(Vault.instance.spriteRendererMainMenuBackground));
+            }
             do
             {
+
                 for (int i = 0; i < Vault.instance.imageGameLevelUI.Length; i++)
                 {
                     Vault.instance.imageGameLevelUI[i].color = new Vector4(1, 1, 1, Vault.instance.imageGameLevelUI[i].color.a - speedChange);
                 }
+
                 yield return new WaitForSeconds(0.015f);
             } while (Vault.instance.imageGameLevelUI[0].color.a > 0);
         }
@@ -86,11 +92,12 @@ public class PauseButtonController : MonoBehaviour
             {
                 for (int i = 0; i < Vault.instance.imageGameLevelUI.Length; i++)
                 {
-                    Vault.instance.imageGameLevelUI[i].color = new Vector4(1, 1, 1, Vault.instance.imageGameLevelUI[i].color.a + speedChange*3);
+                    Vault.instance.imageGameLevelUI[i].color = new Vector4(1, 1, 1, Vault.instance.imageGameLevelUI[i].color.a + speedChange * 3);
                 }
                 yield return new WaitForSeconds(0.015f);
             } while (Vault.instance.imageGameLevelUI[0].color.a < 1);
         }
+        isStart = false;
         yield break;
     }
 }

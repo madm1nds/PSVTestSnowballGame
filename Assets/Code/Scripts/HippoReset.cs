@@ -31,7 +31,7 @@ public static class HippoReset
         Vault.instance.spriteRendererStarLeft.sprite = Vault.instance.spriteStarLeftOn;
         Vault.instance.spriteRendererStarCenter.sprite = Vault.instance.spriteStarCenterOn;
         Vault.instance.spriteRendererStarRight.sprite = Vault.instance.spriteStarRightOn;
-        InitSettings.healthPoints = 3;
+        InitSettings.healthPoints = 30;
         ScoreSetController.scorePlayer = 0;
         TimerRoundController.currentTime = -1;
         ScoreSetController.instance.RefreshPoints(0);
@@ -44,7 +44,6 @@ public static class HippoReset
         }
         Vault.instance.gameObjectHippo.SetActive(true);
 
-#pragma warning disable CS0618 // Тип или член устарел
         Vault.instance.particleSystemVictoryBoard.gravityModifier = 0;
     }
 }

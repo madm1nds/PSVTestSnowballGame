@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
-/// Представляет собой хранилище игровых объектов (GameObject) и их компоненты.
+/// Класс представляет собой хранилище игровых объектов (GameObject) и их компоненты.
 /// Используется для удобства и оптимизации игры. 
 /// Вместо постоянного объявления полей в скриптах, объявление производится лишь единожды.
 /// Также позволяет избежать, постоянного "перетаскивания" объектов из иерархии в инспетор.
@@ -34,6 +34,7 @@ public class Vault : MonoBehaviour
     public GameObject gameObjectVictoryBoard;
     public GameObject gameObjectVictoryBoardRunLevel;
     [Header("------------------------------------------------------------------------------------")]
+    public GameObject gameObjectStatusBarAbility;
     public GameObject gameObjectStatusBarAbilityMask;
     public GameObject gameObjectHippoReadySnowball;
     [Header("------------------------------------------------------------------------------------")]
@@ -54,7 +55,10 @@ public class Vault : MonoBehaviour
     [Header("Transform объектов")]
     public Transform[] transformEnemyTargetSet;
     public Transform[] transformHippoSnowballSet;
-    public Transform transformTargetPlayer;    
+    public Transform transformTargetPlayer;
+    public Transform transformStatusBarAbilityMask;
+    [Header("------------------------------------------------------------------------------------")]
+    public Transform[] transformGameObjectEnemies;
 
     [Header("Sprites")]
     public Sprite[] spriteSnowball;
@@ -91,10 +95,16 @@ public class Vault : MonoBehaviour
     [Header("Images")] 
     public Image[] imageUIHearts;
     public Image[] imageGameLevelUI;
+    [Header("------------------------------------------------------------------------------------")]
+    public Image[] imageMainMenuVaultButton;
+    public Image[] imageItemsMenu;
+    public Image[] imageStartGameMenu;
+    public Image[] imageSettingsMenu;
 
     [Header("ParticleSystem")]
-    public ParticleSystem particleSystemVictoryBoard;
     public ParticleSystem particleSystemHippoSnowball;
+    [SerializeField] private ParticleSystem psVictoryBoard;
+    public ParticleSystem.MainModule particleSystemVictoryBoard;
 
     [Header("Rigidbody2D")]
     public Rigidbody2D[] rigidbody2DSnowballSet;
@@ -105,11 +115,15 @@ public class Vault : MonoBehaviour
     [Header("Joystick")]
     public SimpleInputNamespace.Joystick joystickUIJoystick;
 
+    [Header("EnemyController")]
+    public EnemyController[] enemyControllers;
+
     private void Start()
     {
         if (instance is null)
         {
             instance = gameObject.transform.GetComponent<Vault>();
         }
+        particleSystemVictoryBoard = psVictoryBoard.GetComponent<ParticleSystem>().main;
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Класс, который находит границы экрана в мировых координатах, используя координаты расставленных объектов "Ground"
+/// </summary>
 public class ScreenBoundarySeeker : MonoBehaviour
 {
     private Transform emptinessToSearch;
@@ -25,15 +26,13 @@ public class ScreenBoundarySeeker : MonoBehaviour
         emptinessToSearch = gameObject.transform;
         StartCoroutine(FindBoundary());      
     }
-
-    
+        
     IEnumerator FindBoundary()
     {
         yield return new WaitForSeconds(0.01f);
         screenBoundary_x_left = groundLeft.position.x;
         screenBoundary_x_right = System.Math.Abs(groundLeft.position.x);
         screenBoundary_x_center = groundCenter.position.x;
-
 
         do
         {

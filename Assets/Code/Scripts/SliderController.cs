@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// Класс управляющий поведением слайдера силы броска.
+/// Увеличивает значение от нуля до одного и обратно.
+/// </summary>
 public class SliderController : MonoBehaviour
 {
-    [SerializeField]
-    private Slider slider;
-    [SerializeField]
-    private GameObject abilityStatusBar;
-
     private bool isDecreasing;
     private float speedThrowPower;
     void Start()
@@ -19,16 +17,16 @@ public class SliderController : MonoBehaviour
     {
         if (PauseButtonController.isPause == false)
         {
-            if (abilityStatusBar.activeInHierarchy == false)
+            if (Vault.instance.gameObjectStatusBarAbility.activeInHierarchy == false)
             {
-                if (slider.value < 1 && isDecreasing == false)
+                if (Vault.instance.sliderUISlider.value < 1 && isDecreasing == false)
                 {
-                    slider.value += speedThrowPower;
+                    Vault.instance.sliderUISlider.value += speedThrowPower;
                 }
-                else if ((slider.value > 0 && isDecreasing == true) || slider.value >= 1)
+                else if ((Vault.instance.sliderUISlider.value > 0 && isDecreasing == true) || Vault.instance.sliderUISlider.value >= 1)
                 {
                     isDecreasing = true;
-                    slider.value -= speedThrowPower;
+                    Vault.instance.sliderUISlider.value -= speedThrowPower;
                 }
                 else
                 {
@@ -37,7 +35,7 @@ public class SliderController : MonoBehaviour
             }
             else
             {
-                slider.value = 0;
+                Vault.instance.sliderUISlider.value = 0;
             }
         }
     }

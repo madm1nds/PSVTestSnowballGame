@@ -32,7 +32,7 @@ public class Settings : ScriptableObject
     public int pointsForVictory;
 
     [Range(0.1f, 10f)]
-    [Header("Скорость перезарядки в обычном режиме")]
+    [Header("Скорость перезарядки противников в обычном режиме")]
     [Header("-----------------------------------------------------------------------------")]
     public float cooldownSpeedNormalMode;
 
@@ -216,8 +216,6 @@ public class Settings : ScriptableObject
     [SerializeField]
     private Charactrer hippo;
     [SerializeField]
-    private Snowball cooldownHippo;
-    [SerializeField]
     private RequiredPoints requiredPoints;
     /// <summary>
     /// Метод позволяющий применить новые настройки, которые были выбранны в инспекторе.
@@ -281,7 +279,6 @@ public class Settings : ScriptableObject
         // Хиппо
         hippo.speedCharacter = speedHippo;
         hippo.speedCooldown = speedCooldownHippo;
-        cooldownHippo.cooldown = speedCooldownHippo;
 
         // Требуемое количество очков для поебды
         requiredPoints.points = pointsForVictory;

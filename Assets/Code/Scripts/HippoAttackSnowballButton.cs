@@ -28,12 +28,12 @@ public class HippoAttackSnowballButton : MonoBehaviour
     /// После определённого промежутка времени выключает отображение снежка и хвоста снежка
     /// и перемещает снежок на место игрока. После чего снежок снова доступен для использования.
     /// </summary>
-    /// <param name="snowball">GameObject брошенного снежка.</param>
+    /// <param name="hippoSnowball">GameObject брошенного снежка.</param>
     /// <returns></returns>
-    IEnumerator AttackTimer(GameObject snowball)
+    IEnumerator AttackTimer(GameObject hippoSnowball)
     {
         float timer = 0f;
-        Rigidbody2D rb = snowball.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = hippoSnowball.GetComponent<Rigidbody2D>();
         do
         {
             if (PauseButtonController.isPause == false)
@@ -47,19 +47,20 @@ public class HippoAttackSnowballButton : MonoBehaviour
             }
             yield return new WaitForSeconds(0.001f);
         }
-        while (snowball.activeInHierarchy == true && timer <= 3.5f);
+        while (timer <= 3.5f);
 
-        snowball.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 0);
-        snowball.transform.GetChild(0).gameObject.SetActive(false);
-        snowball.transform.position = spawnPlace.position;
+        hippoSnowball.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 0);
+        hippoSnowball.transform.GetChild(0).gameObject.SetActive(false);
+        hippoSnowball.GetComponent<CircleCollider2D>().enabled = false;
+        hippoSnowball.transform.position = spawnPlace.position;
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
 
-        snowball.SetActive(false);
-        snowball.transform.GetChild(0).gameObject.SetActive(true);
-        snowball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        snowball.GetComponent<CircleCollider2D>().enabled = true;
-        snowball.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+        hippoSnowball.SetActive(false);
+        hippoSnowball.transform.GetChild(0).gameObject.SetActive(true);
+        hippoSnowball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        hippoSnowball.GetComponent<CircleCollider2D>().enabled = true;
+        hippoSnowball.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
         yield break;
     }
     /// <summary>

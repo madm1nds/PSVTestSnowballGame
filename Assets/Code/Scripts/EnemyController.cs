@@ -116,10 +116,10 @@ public class EnemyController : MonoBehaviour
         float timer = 0f;
 
         Transform enemySnowballTransform = enemySnowball.transform;
-        CircleCollider2D enemySnowballCollider = enemySnowball.GetComponent<CircleCollider2D>();
+
         do
         {
-            if (PauseButtonController.isPause == false && enemySnowballCollider.enabled == true)
+            if (PauseButtonController.isPause == false)
             {
                 timer += 0.015f;
                 enemySnowballTransform.position = Vector3.MoveTowards(enemySnowballTransform.position, target.position, characterSettings.speedSnowball / 4);
@@ -132,12 +132,12 @@ public class EnemyController : MonoBehaviour
                 yield return new WaitForSeconds(0.2f);
             }
 
-        } while (enemySnowball.activeInHierarchy == true && timer <= 3.8f);
+        } while (enemySnowball.GetComponent<CircleCollider2D>().enabled == true && timer <= 3.8f);
         enemySnowball.GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 0);
         enemySnowball.transform.GetChild(0).gameObject.SetActive(false);
         enemySnowball.transform.position = spawnPlace.position;
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
 
         enemySnowball.SetActive(false);
         enemySnowball.transform.GetChild(0).gameObject.SetActive(true);
@@ -151,8 +151,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator MoveEnemy()
     {
         yield return new WaitForSeconds(0.2f);
-
-        float newEnemyLocation = 0;
+        float newEnemyLocation;
 
         do
         {

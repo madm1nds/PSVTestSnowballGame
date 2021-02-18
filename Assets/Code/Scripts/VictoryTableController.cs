@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class VictoryTableController : MonoBehaviour
 {
@@ -26,28 +24,24 @@ public class VictoryTableController : MonoBehaviour
                 {
                     AnimationActions.currentNameAnimation = AnimationActions.NameAnimation.TurnOffPause;
                     Vault.instance.gameObjectVictoryBoard.GetComponent<Animator>().SetTrigger("Exit");
-#pragma warning disable CS0618 // Тип или член устарел
-                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8;
+
+                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8f; 
                 }
                 if (hit.collider.CompareTag("RetryButton"))
                 {
                     AnimationActions.currentNameAnimation = AnimationActions.NameAnimation.ResetLevel;
                     Vault.instance.gameObjectVictoryBoard.GetComponent<Animator>().SetTrigger("Exit");
-#pragma warning disable CS0618 // Тип или член устарел
-                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8;
+
+                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8f;
                 }
                 if (hit.collider.CompareTag("SelectLevelButton"))
                 {
                     AnimationActions.currentNameAnimation = AnimationActions.NameAnimation.SelectLevel;
                     Vault.instance.gameObjectVictoryBoard.GetComponent<Animator>().SetTrigger("Exit");
-#pragma warning disable CS0618 // Тип или член устарел
-                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8;
+                    
+                    Vault.instance.particleSystemVictoryBoard.gravityModifier = -8f;
                 }
             }
         }  
-    }
-    void ResetCurrentLevel()
-    {
-
     }
 }

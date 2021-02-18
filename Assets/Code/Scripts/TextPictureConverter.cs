@@ -1,25 +1,56 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Выравнивание по левому, правому краю или по центру
+/// </summary>
 public enum AlignmentTextPicture
 {
     Left,
     Right,
     Center
 }
-
+/// <summary>
+/// Преобразует текст в заранее заготовленные спрайты. 
+/// Так как используются не шейдеры, а обычный программный код
+/// рекомендуется использовать на сцене не более 1000 символов (60fps).
+/// В противном случае происходит слишком большая нагрузка на процессор,
+/// что сильно начнёт снижать производительность системы.
+/// </summary>
 public class TextPictureConverter : MonoBehaviour
 {
     [SerializeField]
     private Sprite[] spriteNumbers;
     private float positionCurrentElement = 0;
     private float spaceBetweenElements = 10;
+    /// <summary>
+    /// Запускает преобразование текста в спрайты. Необходим контейнер с уже существующими объектами и
+    /// изображения-спрайты.
+    /// </summary>
+    /// <param name="setObject">Контейнер с объектами. Первый объект должен быть пустым скрытым спрайтом.</param>
+    /// <param name="convertibleString">Строка, которая будет преобразована в картинки.</param>
+    /// <param name="indent">Отступ</param>
+    /// <param name="spaceBetweenElements">Расстояние между символами.</param>
+    /// <param name="alignmentTextPicture">Выравнивание по левому, правому краю или по центру.</param>
+    /// <remarks><
+    ///  Будет преобразован любой символ Aa-Zz,Аа-Яя, 0-9, любые знаки.
+    /// Необходимо в конце файла написать нужный символ: spriteImage_Z
+    /// Код автоматически обрезает название целиком и остаётся только символ после последнего _
+    /// Аналоги запрещённых символом в файловой системе:
+    ///         /       ->  slash
+    ///         \       ->  backslash
+    ///         |        ->  verticalslash
+    ///         :        ->  colon
+    ///         <       ->   leftbrackets
+    ///         >       ->  rightbrackets
+    ///         ?       ->  question
+    ///         *       ->  asterisk
+    ///         "       ->  quotation
+    /// /remarks>>
     public void SetImageNumber(GameObject setObject, string convertibleString, float indent, float spaceBetweenElements, AlignmentTextPicture alignmentTextPicture)
     {
-        int checkLength = 0;
-        int positionCount = 0;
+        int checkLength;
+        int positionCount;
         string TransformedChar;
         positionCurrentElement = indent;
         this.spaceBetweenElements = spaceBetweenElements;

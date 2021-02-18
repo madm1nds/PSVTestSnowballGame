@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65f5802f74d5bc84fa46288fd4d5f8b1, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  isMove_y: 1
-  evasionMode: 0
+  isMove_y: 0
+  evasionMode: 1
   mode_2_5D: 1
   speedThrowPower: 1
   speedHippo: 1.8

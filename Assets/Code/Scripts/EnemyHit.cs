@@ -17,7 +17,7 @@ public class EnemyHit : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D hippoSnowball)
     {
-        if (hippoSnowball.tag == "Snowball")
+        if (hippoSnowball.CompareTag("Snowball"))
         {
             Vault.instance.particleSystemHippoSnowball.transform.position = hippoSnowball.gameObject.transform.position;
             hippoSnowball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
@@ -40,14 +40,14 @@ public class EnemyHit : MonoBehaviour
             }
             if (ScoreSetController.scorePlayer >= Vault.instance.settings.pointsForVictory)
             {
-                PauseButtonController.instance.clickOnPause();
+                PauseButtonController.instance.ClickOnPause();
                 Vault.instance.gameObjectVictoryBoard.SetActive(true);
                 Vault.instance.gameObjectVictoryBoardRunLevel.SetActive(false);
                 Vault.instance.gameObjectStarLeft.SetActive(true);
                 Vault.instance.gameObjectStarCenter.SetActive(true);
                 Vault.instance.gameObjectStarRight.SetActive(true);
                 Vault.instance.spriteRendererTextVictoryBoard.sprite = Vault.instance.spriteExcellentRus;
-#pragma warning disable CS0618 // Тип или член устарел
+
                 Vault.instance.particleSystemVictoryBoard.gravityModifier = 0;
             }
         }
@@ -70,7 +70,7 @@ public class EnemyHit : MonoBehaviour
     /// <returns></returns>
     IEnumerator MoveEnemy(Transform currentEnemyTransform, EnemyController enemyController)
     {
-        int positionInHierarchy = 0;
+        int positionInHierarchy;
         Transform newEnemyTransform;
         SkeletonAnimation newEnemySkeletonAnimation;
         EnemyController newEnemyController;

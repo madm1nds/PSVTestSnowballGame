@@ -49,29 +49,43 @@ public class AnimationActions : MonoBehaviour
         {
             case NameAnimation.TurnOffPause:
                 VictoryBoard.SetActive(false);
-                PauseButtonController.instance.clickOnPause();
+                StartCoroutine(HideSpriteRendererObject(Vault.instance.spriteRendererMainMenuBackground));
+                PauseButtonController.instance.ClickOnPause();
                 break;
             case NameAnimation.ResetLevel:
                 VictoryBoard.SetActive(false);
-                PauseButtonController.instance.clickOnPause();
+                StartCoroutine(HideSpriteRendererObject(Vault.instance.spriteRendererMainMenuBackground));
+                PauseButtonController.instance.ClickOnPause();
                 HippoReset.Run();
-                //TODO: Сделать выбор!
-                EnemyStartLocation.instance.ResetLocation(1);
+
+                StartCoroutine(EnemyStartLocation.instance.ResetLocation(LevelNumberButton.currentNumberLevel - 1));
                 break;
             case NameAnimation.ShowItemsMenu:
                 Vault.instance.gameObjectMainMenuVaultButton.SetActive(false);
                 Vault.instance.gameObjectItemsMenu.SetActive(true);
                 Vault.instance.buttonUIBackButton.transform.parent.gameObject.gameObject.SetActive(true);
+                for (int i = 0; i < Vault.instance.imageItemsMenu.Length; i++)
+                {
+                    StartCoroutine(ShowSpriteObject(Vault.instance.imageItemsMenu[i]));
+                }
                 break;
             case NameAnimation.ShowStartGameMenu:
                 Vault.instance.gameObjectMainMenuVaultButton.SetActive(false);
                 Vault.instance.gameObjectStartGameMenu.SetActive(true);
                 Vault.instance.buttonUIBackButton.transform.parent.gameObject.gameObject.SetActive(true);
+                for (int i = 0; i < Vault.instance.imageStartGameMenu.Length; i++)
+                {
+                    StartCoroutine(ShowSpriteObject(Vault.instance.imageStartGameMenu[i]));
+                }
                 break;
             case NameAnimation.ShowSettingsMenu:
                 Vault.instance.gameObjectMainMenuVaultButton.SetActive(false);
                 Vault.instance.gameObjectSettingsMenu.SetActive(true);
                 Vault.instance.buttonUIBackButton.transform.parent.gameObject.gameObject.SetActive(true);
+                for (int i = 0; i < Vault.instance.imageSettingsMenu.Length; i++)
+                {
+                    StartCoroutine(ShowSpriteObject(Vault.instance.imageSettingsMenu[i]));
+                }
                 break;
             case NameAnimation.ShowMainMenu:
                 Vault.instance.gameObjectMainMenuVaultButton.SetActive(true);
@@ -79,16 +93,34 @@ public class AnimationActions : MonoBehaviour
                 Vault.instance.gameObjectStartGameMenu.SetActive(false);
                 Vault.instance.gameObjectSettingsMenu.SetActive(false);
                 Vault.instance.buttonUIBackButton.transform.parent.gameObject.gameObject.SetActive(false);
+                for (int i = 0; i < Vault.instance.imageMainMenuVaultButton.Length; i++)
+                {
+                    StartCoroutine(ShowSpriteObject(Vault.instance.imageMainMenuVaultButton[i]));
+                }
                 break;
             case NameAnimation.ShowGameLevel:
-                StartCoroutine(ShowGameLevel());
+                Vault.instance.gameObjectStartGameMenu.SetActive(false);
+                Vault.instance.buttonUIBackButton.transform.parent.gameObject.gameObject.SetActive(false);
+                Vault.instance.gameObjectMainMenuUI.SetActive(false);
+                Vault.instance.gameObjectGround[LevelNumberButton.currentNumberLevel - 1].SetActive(true);
+                HippoReset.Run();
+                StartCoroutine(EnemyStartLocation.instance.ResetLocation(LevelNumberButton.currentNumberLevel - 1));
+                StartCoroutine(HideSpriteRendererObject(Vault.instance.spriteRendererMainMenuBackground));
+
+                Vault.instance.gameObjectGameLevelUI.SetActive(true);
+                PauseButtonController.instance.ClickOnPause();
+                VictoryBoard.SetActive(false);
                 break;
             case NameAnimation.SelectLevel:
                 Vault.instance.gameObjectStartGameMenu.SetActive(true);
                 Vault.instance.buttonUIBackButton.transform.parent.gameObject.gameObject.SetActive(true);
                 Vault.instance.gameObjectMainMenuUI.SetActive(true);
-                StartCoroutine(ShowSpriteRendererObject(Vault.instance.spriteRendererMainMenuBackground));
-                //Vault.instance.gameObjectMainMenu2D.SetActive(true);
+                //StartCoroutine(ShowSpriteRendererObject(Vault.instance.spriteRendererMainMenuBackground));
+                for (int i = 0; i < Vault.instance.imageStartGameMenu.Length; i++)
+                {
+                    StartCoroutine(ShowSpriteObject(Vault.instance.imageStartGameMenu[i]));
+                }
+
                 Vault.instance.gameObjectGameLevelUI.SetActive(false);
                 Vault.instance.gameObjectGround[LevelNumberButton.currentNumberLevel - 1].SetActive(false);
 
@@ -96,31 +128,15 @@ public class AnimationActions : MonoBehaviour
 
                 break;
         }
-        currentNameAnimation = NameAnimation.NoAnimation;       
-    }
-    IEnumerator ShowGameLevel()
-    {
-        Vault.instance.gameObjectStartGameMenu.SetActive(false);
-        Vault.instance.buttonUIBackButton.transform.parent.gameObject.gameObject.SetActive(false);
-        Vault.instance.gameObjectMainMenuUI.SetActive(false);
-        StartCoroutine(HideSpriteRendererObject(Vault.instance.spriteRendererMainMenuBackground));
-        Vault.instance.gameObjectGround[LevelNumberButton.currentNumberLevel - 1].SetActive(true);
-        HippoReset.Run();
-        EnemyStartLocation.instance.ResetLocation(LevelNumberButton.currentNumberLevel - 1);
-        //Vault.instance.gameObjectMainMenu2D.SetActive(false);
-        yield return new WaitForSeconds(0.05f);
-        Vault.instance.gameObjectGameLevelUI.SetActive(true);
-        PauseButtonController.instance.clickOnPause();
-        VictoryBoard.SetActive(false);
-
-        yield break;
+        currentNameAnimation = NameAnimation.NoAnimation;
     }
     public IEnumerator HideSpriteRendererObject(SpriteRenderer sprite)
     {
         const float speedChange = 0.05f;
+        sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a);
         do
         {
-            sprite.color = new Vector4(1, 1, 1, sprite.color.a - speedChange);
+            sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a - speedChange);
             yield return new WaitForSeconds(0.015f);
         } while (sprite.color.a > 0);
         sprite.gameObject.SetActive(false);
@@ -129,20 +145,24 @@ public class AnimationActions : MonoBehaviour
     public IEnumerator ShowSpriteRendererObject(SpriteRenderer sprite)
     {
         const float speedChange = 0.05f;
+
+        float pastAlpha = sprite.color.a <= 0.001f ? 1 : sprite.color.a;
+        sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, 0);
         sprite.gameObject.SetActive(true);
         do
         {
-            sprite.color = new Vector4(1, 1, 1, sprite.color.a + speedChange*3);
+            sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a + speedChange);
             yield return new WaitForSeconds(0.015f);
-        } while (sprite.color.a > 0);
+        } while (sprite.color.a < pastAlpha);
         yield break;
     }
     public IEnumerator HideSpriteObject(Image sprite)
     {
         const float speedChange = 0.05f;
+        sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a);
         do
         {
-            sprite.color = new Vector4(1, 1, 1, sprite.color.a - speedChange);
+            sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a - speedChange);
             yield return new WaitForSeconds(0.015f);
         } while (sprite.color.a > 0);
         sprite.gameObject.SetActive(false);
@@ -151,12 +171,14 @@ public class AnimationActions : MonoBehaviour
     public IEnumerator ShowSpriteObject(Image sprite)
     {
         const float speedChange = 0.05f;
+        float pastAlpha = sprite.color.a <= 0.001f ? 1 : sprite.color.a;
+        sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, 0);
         sprite.gameObject.SetActive(true);
         do
         {
-            sprite.color = new Vector4(1, 1, 1, sprite.color.a + speedChange * 3);
+            sprite.color = new Vector4(sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a + speedChange);
             yield return new WaitForSeconds(0.015f);
-        } while (sprite.color.a > 0);
+        } while (sprite.color.a < pastAlpha);
         yield break;
     }
 }
