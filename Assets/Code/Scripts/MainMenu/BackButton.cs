@@ -5,9 +5,10 @@ using UnityEngine;
 /// </summary>
 public class BackButton : MonoBehaviour
 {
+    private const float delayBeforeInitialization = 0.2f;
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(delayBeforeInitialization);
         Vault.instance.buttonUIBackButton.onClick.AddListener(delegate { ShowMainMenu(); });
     }
     /// <summary>
@@ -19,6 +20,7 @@ public class BackButton : MonoBehaviour
         RunAnimation(Vault.instance.gameObjectItemsMenu, Vault.instance.gameObjectsItemsMenu);
         RunAnimation(Vault.instance.gameObjectStartGameMenu, Vault.instance.gameObjectsStartGameMenu);
         RunAnimation(Vault.instance.gameObjectSettingsMenu, Vault.instance.gameObjectsSettingsMenu);
+        Vault.instance.audioSourcePressButton.Play();
     }
     /// <summary>
     /// Запускает анимацию каждого объекта в определённой части меню.

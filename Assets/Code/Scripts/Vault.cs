@@ -9,8 +9,26 @@ using UnityEngine.UI;
 public class Vault : MonoBehaviour
 {
     public static Vault instance;
+    public static int startPosition = 0;
+    public static SystemLanguage currentLanguage; 
     [Header("Глобальные настройки")]
     public Settings settings;
+    public bool isMusic;
+    public bool isSounds;
+    public bool isEffects;
+
+    [Header("AudioSources")]
+    public AudioSource audioSourceGameMusic;
+    public AudioSource audioSourcePressButton;
+    public AudioSource audioSourceWinFail;
+    public AudioSource[] audioSourceThrow;
+    public AudioSource[] audioSourceHit;
+
+    [Header("AudioClips")]
+    public AudioClip audioClipWin;
+    public AudioClip audioClipFail;
+    public AudioClip[] audioClipThrow;
+    public AudioClip[] audioClipHit;
 
     [Header("Игровые объекты на сцене")]
     public GameObject gameObjectGameLevelUI;
@@ -60,16 +78,30 @@ public class Vault : MonoBehaviour
     [Header("------------------------------------------------------------------------------------")]
     public Transform[] transformGameObjectEnemies;
 
+    [Header("Localisation")]
+    public Sprite spriteEvasionModeRus;
+    public Sprite spriteExcellentRus;
+    public Sprite spriteFiascoRus;
+    public Sprite spritePauseRus;
+    public Sprite spriteThrowPowerRus;
+    [Header("------------------------------------------------------------------------------------")]
+    public Sprite spriteEvasionModeEng;
+    public Sprite spriteExcellentEng;
+    public Sprite spriteFiascoEng;
+    public Sprite spritePauseEng;
+    public Sprite spriteThrowPowerEng;
+    [Header("------------------------------------------------------------------------------------")]
+    public Sprite spriteEvasionModeJap;
+    public Sprite spriteExcellentJap;
+    public Sprite spriteFiascoJap;
+    public Sprite spritePauseJap;
+    public Sprite spriteThrowPowerJap;
+
     [Header("Sprites")]
     public Sprite[] spriteSnowball;
 
     public Sprite spriteGoodHeart;
     public Sprite spriteBrokenHeart;
-
-    public Sprite spriteExcellentRus;
-    public Sprite spriteLivesEndedRus;
-    public Sprite spritePauseRus;
-    public Sprite spriteTrowPowerRus;
 
     public Sprite spriteStarLeftOff;
     public Sprite spriteStarCenterOff;
@@ -77,6 +109,16 @@ public class Vault : MonoBehaviour
     public Sprite spriteStarLeftOn;
     public Sprite spriteStarCenterOn;
     public Sprite spriteStarRightOn;
+
+    public Sprite spriteThumbJoystickXY;
+    public Sprite spriteThumbJoystickY;
+
+    public Sprite spriteMusicOn;
+    public Sprite spriteMusicOff;
+    public Sprite spriteSoundsOn;
+    public Sprite spriteSoundsOff;
+    public Sprite spriteEffectsOn;
+    public Sprite spriteEffectsOff;
 
     [Header("SpriteRenderers")]
     public SpriteRenderer spriteRendererTextVictoryBoard;
@@ -91,8 +133,17 @@ public class Vault : MonoBehaviour
     public Button[] buttonUIMainMenu;
     public Button buttonUIBackButton;
     public Button[] buttonUIItemsMenu;
+    public Button buttonUIMusic;
+    public Button buttonUISounds;
+    public Button buttonUIEffects;
+    [Header("Buttons Language")]
+    public Button buttonUIRussian;
+    public Button buttonUIEnglish;
+    public Button buttonUIJapanese;
 
-    [Header("Images")] 
+    [Header("Images")]
+    public Image imageUISnowballButton;
+    public Image imageUIThumbJoystick;
     public Image[] imageUIHearts;
     public Image[] imageGameLevelUI;
     [Header("------------------------------------------------------------------------------------")]
@@ -100,11 +151,18 @@ public class Vault : MonoBehaviour
     public Image[] imageItemsMenu;
     public Image[] imageStartGameMenu;
     public Image[] imageSettingsMenu;
+    public Image imageUIMusic;
+    public Image imageUISounds;
+    public Image imageUIEffects;
+    public Image imageUIEvasionButton;
+    public Image imageUIThrowPower;
 
     [Header("ParticleSystem")]
     public ParticleSystem particleSystemHippoSnowball;
     [SerializeField] private ParticleSystem psVictoryBoard;
     public ParticleSystem.MainModule particleSystemVictoryBoard;
+    [SerializeField] private ParticleSystem psSnow;
+    public ParticleSystem.MainModule particleSystemSnow;
 
     [Header("Rigidbody2D")]
     public Rigidbody2D[] rigidbody2DSnowballSet;
@@ -125,5 +183,17 @@ public class Vault : MonoBehaviour
             instance = gameObject.transform.GetComponent<Vault>();
         }
         particleSystemVictoryBoard = psVictoryBoard.GetComponent<ParticleSystem>().main;
+        particleSystemSnow = psSnow.GetComponent<ParticleSystem>().main;
     }
+}
+/// <summary>
+/// Перечисление названий спрайтов, язык которых будет меняться.
+/// </summary>
+public enum SpriteName
+{
+    EvasionMode,
+    Excellent,
+    Fiasco,
+    Pause,
+    ThrowPower
 }

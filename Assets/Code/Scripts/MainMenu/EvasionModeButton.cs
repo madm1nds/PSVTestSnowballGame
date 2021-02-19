@@ -8,9 +8,13 @@ using UnityEngine.UI;
 /// </summary>
 public class EvasionModeButton : MonoBehaviour
 {
+    private const float delayBeforeInitialization = 0.2f;
+    private const int minNumberLevel = 1;
+    private const int maxNumberLevel = 5;
+
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(delayBeforeInitialization);
         gameObject.GetComponent<Button>().onClick.AddListener(delegate { RunLevel(); });
     }
     /// <summary>
@@ -19,7 +23,7 @@ public class EvasionModeButton : MonoBehaviour
     void RunLevel()
     {
         AnimationActions.currentNameAnimation = AnimationActions.NameAnimation.ShowGameLevel;
-        LevelNumberButton.currentNumberLevel = Random.Range(1, 6);
+        LevelNumberButton.currentNumberLevel = Random.Range(minNumberLevel, maxNumberLevel + 1);
         for (int i = 0; i < Vault.instance.gameObjectsStartGameMenu.Length; i++)
         {
             Vault.instance.gameObjectsStartGameMenu[i].GetComponent<Animator>().SetTrigger("Exit");
@@ -27,6 +31,8 @@ public class EvasionModeButton : MonoBehaviour
         Vault.instance.settings.evasionMode = true;
         Vault.instance.settings.isMove_y = false;
         Vault.instance.joystickUIJoystick.GetComponent<SimpleInputNamespace.Joystick>().movementAxes = SimpleInputNamespace.Joystick.MovementAxes.XandY;
+        Vault.instance.imageUIThumbJoystick.sprite = Vault.instance.spriteThumbJoystickXY;
         Vault.instance.settings.ApplySettings();
+        Vault.instance.audioSourcePressButton.Play();
     }
 }

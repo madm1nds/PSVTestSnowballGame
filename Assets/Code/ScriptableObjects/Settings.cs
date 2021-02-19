@@ -11,8 +11,8 @@ public class Settings : ScriptableObject
     [Header("Перемещение только по Y координате")]
     [Header("-----------------------------------------------------------------------------")]
     public bool isMove_y;
-    [Header("Режим уклоняшек")]
-    public bool evasionMode;
+    [HideInInspector]
+    public bool evasionMode;//режим уклоняшек
     [Header("Отображение уровня в 2.5D")]
     public bool mode_2_5D;
     [Range(0.1f, 3f)]
@@ -36,7 +36,7 @@ public class Settings : ScriptableObject
     [Header("-----------------------------------------------------------------------------")]
     public float cooldownSpeedNormalMode;
 
-    [Header("Очки за попадания по противнику")]   
+    [Header("Очки за попадания по противнику")]
     public int pointsPumaPapa;
     public int pointsPumaMama;
     public int pointsPumaDaughter;

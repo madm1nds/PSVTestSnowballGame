@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65f5802f74d5bc84fa46288fd4d5f8b1, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  isMove_y: 0
-  evasionMode: 1
+  isMove_y: 1
+  evasionMode: 0
   mode_2_5D: 1
   speedThrowPower: 1
   speedHippo: 1.8
-  speedCooldownHippo: 0.6
-  pointsForVictory: 1
+  speedCooldownHippo: 3
+  pointsForVictory: 10
   cooldownSpeedNormalMode: 5
   pointsPumaPapa: 1
   pointsPumaMama: 1
@@ -92,5 +92,4 @@ MonoBehaviour:
     type: 2}
   stoppingEnemy: {fileID: 11400000, guid: 1d1bfea56f32d6e43aa289973fe2a0fe, type: 2}
   hippo: {fileID: 11400000, guid: f78337fea942e2243bcdc476d3c90bb1, type: 2}
-  cooldownHippo: {fileID: 11400000, guid: fdc6b5cd0ec1a0f4cb7a9b9394b695e7, type: 2}
   requiredPoints: {fileID: 11400000, guid: 71213ca7c4cb33f46bd22f84f4662d55, type: 2}

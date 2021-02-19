@@ -11,7 +11,7 @@ public enum AlignmentTextPicture
     Center
 }
 /// <summary>
-/// Преобразует текст в заранее заготовленные спрайты. 
+/// Преобразует текст в заранее заготовленные спрайты.  На текущий момент работает только с UI.
 /// Так как используются не шейдеры, а обычный программный код
 /// рекомендуется использовать на сцене не более 1000 символов (60fps).
 /// В противном случае происходит слишком большая нагрузка на процессор,
@@ -124,6 +124,11 @@ public class TextPictureConverter : MonoBehaviour
             SetAnchoredPosition(setObjectRectTransform[i], setObjectRectTransform[i + 1]);
         }
     }
+    /// <summary>
+    /// Ставит новый символ сразу за предыдущим символом.
+    /// </summary>
+    /// <param name="previousElement">Предыдущий элемент.</param>
+    /// <param name="currentElement">Текущий элемент.</param>
     public void SetAnchoredPosition(RectTransform previousElement, RectTransform currentElement)
     {
         positionCurrentElement += ((previousElement.sizeDelta.x) -

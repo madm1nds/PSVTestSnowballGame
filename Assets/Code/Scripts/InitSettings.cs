@@ -15,7 +15,7 @@ public class InitSettings : MonoBehaviour
     private const int currentSnowballView = 0;
 
     void Start()
-    {        
+    {
         ChangeSnowball.Run(Vault.instance.buttonUIItemsMenu[currentSnowballView].gameObject, currentSnowballView);
 
         if (!Vault.instance.settings.mode_2_5D)
@@ -25,5 +25,10 @@ public class InitSettings : MonoBehaviour
         }
 
         Vault.instance.settings.ApplySettings();
+
+        Vault.currentLanguage = Application.systemLanguage;
+
+        SettingsMenu.SetLanguage(Vault.currentLanguage);
+
     }
 }

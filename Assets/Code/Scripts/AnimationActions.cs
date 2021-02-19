@@ -130,6 +130,11 @@ public class AnimationActions : MonoBehaviour
         }
         currentNameAnimation = NameAnimation.NoAnimation;
     }
+    /// <summary>
+    /// Плавно уменьшает альфа канал у SpriteRenderer до нуля.
+    /// </summary>
+    /// <param name="sprite">SpriteRenderer, у которого будет меняться прозрачность.</param>
+    /// <returns></returns>
     public IEnumerator HideSpriteRendererObject(SpriteRenderer sprite)
     {
         const float speedChange = 0.05f;
@@ -142,6 +147,11 @@ public class AnimationActions : MonoBehaviour
         sprite.gameObject.SetActive(false);
         yield break;
     }
+    /// <summary>
+    /// Плавно увеличивает альфа канал у SpriteRenderer до 1.
+    /// </summary>
+    /// <param name="sprite">SpriteRenderer, у которого будет меняться прозрачность.</param>
+    /// <returns></returns>
     public IEnumerator ShowSpriteRendererObject(SpriteRenderer sprite)
     {
         const float speedChange = 0.05f;
@@ -156,6 +166,11 @@ public class AnimationActions : MonoBehaviour
         } while (sprite.color.a < pastAlpha);
         yield break;
     }
+    /// <summary>
+    /// Плавно уменьшает альфа канал в Image до 0.
+    /// </summary>
+    /// <param name="sprite">Image, у которого будет меняться прозрачность.</param>
+    /// <returns></returns>
     public IEnumerator HideSpriteObject(Image sprite)
     {
         const float speedChange = 0.05f;
@@ -168,6 +183,11 @@ public class AnimationActions : MonoBehaviour
         sprite.gameObject.SetActive(false);
         yield break;
     }
+    /// <summary>
+    /// Плавно увеличивает альфа канал в Image до 1.
+    /// </summary>
+    /// <param name="sprite">Image, у которого будет меняться прозрачность.</param>
+    /// <returns></returns>
     public IEnumerator ShowSpriteObject(Image sprite)
     {
         const float speedChange = 0.05f;

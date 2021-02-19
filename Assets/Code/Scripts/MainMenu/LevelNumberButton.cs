@@ -11,9 +11,10 @@ public class LevelNumberButton : MonoBehaviour
     public static int currentNumberLevel;
     [SerializeField]
     private int numberLevel;
+    private const float delayBeforeInitialization = 0.2f;
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(delayBeforeInitialization);
         gameObject.GetComponent<Button>().onClick.AddListener(delegate { RunLevel(); });
     }
     /// <summary>
@@ -26,10 +27,12 @@ public class LevelNumberButton : MonoBehaviour
         Vault.instance.settings.evasionMode = false;
         Vault.instance.settings.isMove_y = true;
         Vault.instance.joystickUIJoystick.GetComponent<SimpleInputNamespace.Joystick>().movementAxes = SimpleInputNamespace.Joystick.MovementAxes.Y;
+        Vault.instance.imageUIThumbJoystick.sprite = Vault.instance.spriteThumbJoystickY;
         Vault.instance.settings.ApplySettings();
         for (int i = 0; i < Vault.instance.gameObjectsStartGameMenu.Length; i++)
         {
             Vault.instance.gameObjectsStartGameMenu[i].GetComponent<Animator>().SetTrigger("Exit");
         }
+        Vault.instance.audioSourcePressButton.Play();
     }
 }

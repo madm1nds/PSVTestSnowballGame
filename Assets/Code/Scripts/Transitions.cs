@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 /// <summary>
-///  Находится в каждом аниматоре. Запускается при завершении анимаций.
+///  Находится в каждом аниматоре. Запускает AnimationActions.instance.Run() при завершении анимаций.
 /// </summary>
 public class Transitions : StateMachineBehaviour
 {

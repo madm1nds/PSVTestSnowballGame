@@ -2,19 +2,20 @@
 using System.Collections;
 using UnityEngine;
 /// <summary>
-/// Добавляет логику для кнопки "StartGameButton" в главном меню.
+/// Добавляет логику для кнопок в главном меню.
 /// </summary>
 public class MainMenuButtons : MonoBehaviour
 {
+    private const float delayBeforeInitialization = 0.2f;
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(delayBeforeInitialization);
         AddListners("StartGameButton", AnimationActions.NameAnimation.ShowStartGameMenu);
         AddListners("SettingsButton", AnimationActions.NameAnimation.ShowSettingsMenu);
         AddListners("ItemsButton", AnimationActions.NameAnimation.ShowItemsMenu);
     }
     /// <summary>
-    /// Активирует переход в выбор уровней, после завершения анимации.
+    /// Активирует переход в выборанное меню, после завершения анимации.
     /// </summary>
     void AddListners(String compareTag, AnimationActions.NameAnimation nameAnimation)
     {
@@ -30,9 +31,11 @@ public class MainMenuButtons : MonoBehaviour
                         {
                             Vault.instance.gameObjectMainMenu[j].GetComponent<Animator>().SetTrigger("Exit");
                         }
+                        Vault.instance.audioSourcePressButton.Play();
                     });
                 break;
             }
         }
+
     }
 }
