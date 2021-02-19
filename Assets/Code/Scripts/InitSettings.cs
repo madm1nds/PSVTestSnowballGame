@@ -27,7 +27,7 @@ public class InitSettings : MonoBehaviour
         Vault.instance.settings.ApplySettings();
 
         Vault.currentLanguage = Application.systemLanguage;
-
+        
         SettingsMenu.SetLanguage(Vault.currentLanguage);
 
     }

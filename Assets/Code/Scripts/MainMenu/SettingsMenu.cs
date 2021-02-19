@@ -59,6 +59,7 @@ public class SettingsMenu : MonoBehaviour
             Vault.instance.audioSourceGameMusic.volume = maxValue;
         }
         Vault.instance.isMusic = !Vault.instance.isMusic;
+        Vault.instance.audioSourcePressButton.Play();
     }
     /// <summary>
     /// Метод, который включает или выключает все звуки в игре.
@@ -112,6 +113,7 @@ public class SettingsMenu : MonoBehaviour
             Vault.instance.particleSystemSnow.maxParticles = 15;
         }
         Vault.instance.isEffects = !Vault.instance.isEffects;
+        Vault.instance.audioSourcePressButton.Play();
     }
     /// <summary>
     /// Изменяет язык, на указанный в аргументе.
@@ -140,6 +142,13 @@ public class SettingsMenu : MonoBehaviour
         Vault.instance.spriteRendererTextVictoryBoard.sprite = LanguageController.ChangeLanguage(SpriteName.Excellent);
         Vault.instance.imageUIEvasionButton.sprite = LanguageController.ChangeLanguage(SpriteName.EvasionMode);
         Vault.instance.imageUIThrowPower.sprite = LanguageController.ChangeLanguage(SpriteName.ThrowPower);
-
+        if (Vault.startPosition < 2)
+        {
+            Vault.startPosition++;
+        }
+        else
+        {
+            Vault.instance.audioSourcePressButton.Play();
+        }
     }
 }

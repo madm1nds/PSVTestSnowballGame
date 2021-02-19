@@ -29,7 +29,7 @@ public static class ChangeSnowball
             }
         }
         button.GetComponent<Image>().color = colorButton;
-        if (Vault.startPosition < 1)
+        if (Vault.startPosition < 2)
         {
             Vault.startPosition++;
         }
