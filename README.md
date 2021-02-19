@@ -6,6 +6,7 @@
 
 ---
 
+### Расположение apk: \Assets\PSV Test Snowball Game.apk
 ### Расположение всех настроек в проекте: \Assets\Level\Settings
 
 ---
